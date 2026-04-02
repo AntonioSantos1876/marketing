@@ -50,23 +50,23 @@ export default function LeadsTable() {
         <h1 className="text-3xl font-bold">Lead Management</h1>
         
         <div className="relative w-full md:w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <input 
             type="text" 
             placeholder="Search leads..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-black border border-border rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:border-primary outline-none"
+            className="w-full bg-background border border-border rounded-lg py-2 pl-10 pr-4 text-sm text-foreground focus:border-primary outline-none"
           />
         </div>
       </div>
       
       <div className="glass-card overflow-x-auto p-0 border border-border relative">
         {loading ? (
-          <div className="p-8 text-center text-gray-400">Loading leads...</div>
+          <div className="p-8 text-center text-muted-foreground">Loading leads...</div>
         ) : (
           <table className="w-full text-left">
-            <thead className="bg-white/5 border-b border-border text-sm text-gray-400">
+            <thead className="bg-muted/50 border-b border-border text-sm text-muted-foreground">
               <tr>
                 <th className="p-4 font-medium">Name</th>
                 <th className="p-4 font-medium">Business</th>
@@ -80,23 +80,23 @@ export default function LeadsTable() {
             <tbody className="divide-y divide-border text-sm">
               {filteredLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-gray-500">No leads found.</td>
+                  <td colSpan={7} className="p-8 text-center text-muted-foreground/80">No leads found.</td>
                 </tr>
               ) : (
                 filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-white/5 transition-colors">
-                    <td className="p-4 font-medium">{lead.full_name}</td>
-                    <td className="p-4">{lead.business_name}</td>
-                    <td className="p-4">{lead.monthly_budget}</td>
-                    <td className="p-4">{lead.ready_to_start}</td>
-                    <td className="p-4 text-gray-400">{new Date(lead.created_at).toLocaleDateString()}</td>
+                  <tr key={lead.id} className="hover:bg-muted/50 transition-colors">
+                    <td className="p-4 font-medium text-foreground">{lead.full_name}</td>
+                    <td className="p-4 text-foreground">{lead.business_name}</td>
+                    <td className="p-4 text-foreground">{lead.monthly_budget}</td>
+                    <td className="p-4 text-foreground">{lead.ready_to_start}</td>
+                    <td className="p-4 text-muted-foreground">{new Date(lead.created_at).toLocaleDateString()}</td>
                     <td className="p-4">
                       <span className={`px-2.5 py-1 rounded-full text-xs border ${getStatusColor(lead.lead_status || 'New')}`}>
                         {lead.lead_status || 'New'}
                       </span>
                     </td>
                     <td className="p-4 text-right">
-                      <Link href={`/admin/leads/${lead.id}`} className="inline-flex items-center gap-1 text-primary hover:text-white transition-colors">
+                      <Link href={`/admin/leads/${lead.id}`} className="inline-flex items-center gap-1 text-primary hover:text-foreground transition-colors">
                         <Eye size={16} /> View
                       </Link>
                     </td>

@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathname, isLoginPage, router]);
 
   if (loading) {
-    return <div className="min-h-screen bg-background flex items-center justify-center text-white">Loading Admin...</div>;
+    return <div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading Admin...</div>;
   }
 
   if (isLoginPage) {
@@ -56,13 +56,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex-1 p-4 space-y-2">
           <Link 
             href="/admin/dashboard" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname === '/admin/dashboard' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname === '/admin/dashboard' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
           >
             <LayoutDashboard size={20} /> Dashboard
           </Link>
           <Link 
             href="/admin/leads" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname.startsWith('/admin/leads') ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname.startsWith('/admin/leads') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
           >
             <Users size={20} /> Lead Management
           </Link>
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4 border-t border-border">
           <button 
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+            className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-colors"
           >
             <LogOut size={20} /> Logout
           </button>

@@ -39,7 +39,7 @@ export default function AdminDashboard() {
         {/* Metric 1 */}
         <div className="glass-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-gray-400 font-medium">Total Leads</h3>
+            <h3 className="text-muted-foreground font-medium">Total Leads</h3>
             <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400"><Users size={20} /></div>
           </div>
           <p className="text-4xl font-bold">{metrics.total}</p>
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
         {/* Metric 2 */}
         <div className="glass-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-gray-400 font-medium">New Submissions</h3>
+            <h3 className="text-muted-foreground font-medium">New Submissions</h3>
             <div className="p-2 bg-primary/10 rounded-lg text-primary"><UserPlus size={20} /></div>
           </div>
           <p className="text-4xl font-bold">{metrics.new}</p>
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
         {/* Metric 3 */}
         <div className="glass-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-gray-400 font-medium">Contacted</h3>
+            <h3 className="text-muted-foreground font-medium">Contacted</h3>
             <div className="p-2 bg-purple-500/10 rounded-lg text-purple-400"><PhoneCall size={20} /></div>
           </div>
           <p className="text-4xl font-bold">{metrics.contacted}</p>
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
         {/* Metric 4 */}
         <div className="glass-card p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-gray-400 font-medium">Qualified Leads</h3>
+            <h3 className="text-muted-foreground font-medium">Qualified Leads</h3>
             <div className="p-2 bg-green-500/10 rounded-lg text-green-400"><CheckCircle size={20} /></div>
           </div>
           <p className="text-4xl font-bold">{metrics.qualified}</p>
@@ -75,13 +75,13 @@ export default function AdminDashboard() {
       
       <div className="mt-12 glass-card p-8">
         <h2 className="text-xl font-bold mb-4">Quick Actions & Notes</h2>
-        <p className="text-gray-400 mb-6">Welcome back to the portal. Review the leads tab to process incoming applications.</p>
+        <p className="text-muted-foreground mb-6">Welcome back to the portal. Review the leads tab to process incoming applications.</p>
         <div className="space-y-4">
-          <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+          <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg border border-border">
             <CheckCircle className="text-primary" size={20}/>
             <div>
               <p className="font-semibold">Review Pending Leads</p>
-              <p className="text-sm text-gray-400">You have {metrics.new} unseen applications.</p>
+              <p className="text-sm text-muted-foreground">You have {metrics.new} unseen applications.</p>
             </div>
           </div>
         </div>

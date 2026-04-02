@@ -8,19 +8,19 @@ export default function ThankYouPage() {
         <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
           <CheckCircle2 className="text-primary" size={40} />
         </div>
-        
+
         <h1 className="text-4xl font-bold mb-4">Application Received</h1>
-        
-        <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+
+        <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
           Thank you for applying. We review each submission carefully. If your business appears to be a strong fit for our strategic services, we will reach out via your preferred contact method within 24-48 hours.
         </p>
-        
-        <div className="p-4 bg-white/5 border border-white/10 rounded-lg mb-8">
-          <p className="text-sm text-gray-300">
+
+        <div className="p-4 bg-muted/50 border border-border rounded-lg mb-8">
+          <p className="text-sm text-foreground">
             <strong>Next Step:</strong> Keep an eye on your inbox. Applications are processed in the order they are received.
           </p>
         </div>
-        
+
         <Link href="/" className="btn-secondary inline-flex items-center gap-2">
           Return Home <ArrowRight size={18} />
         </Link>

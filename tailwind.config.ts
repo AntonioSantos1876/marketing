@@ -9,15 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#050505",
-        foreground: "#FAFAFA",
+        background: "rgb(var(--background) / <alpha-value>)",
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
         primary: {
-          DEFAULT: "#D4AF37", // A premium gold color
-          dark: "#AA8C2C"
+          DEFAULT: "rgb(var(--primary) / <alpha-value>)",
+          dark: "rgb(var(--primary-dark) / <alpha-value>)"
         },
-        card: "#121212",
-        "card-hover": "#1A1A1A",
-        border: "#2A2A2A"
+        card: "rgb(var(--card) / <alpha-value>)",
+        "card-hover": "rgb(var(--card-hover) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        "muted-foreground": "rgb(var(--muted-foreground) / <alpha-value>)"
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],

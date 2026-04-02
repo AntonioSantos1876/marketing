@@ -48,33 +48,33 @@ export default function AdminLogin() {
         </div>
         
         <h1 className="text-2xl font-bold text-center mb-2">Admin Portal</h1>
-        <p className="text-center text-gray-400 text-sm mb-8">Secure login for business owner</p>
+        <p className="text-center text-muted-foreground text-sm mb-8">Secure login for business owner</p>
         
         {error && (
-          <div className="mb-6 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-400 text-sm text-center">
+          <div className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded text-red-500 text-sm text-center">
             {error}
           </div>
         )}
         
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Email Address</label>
+            <label className="block text-sm text-muted-foreground mb-1">Email Address</label>
             <input 
               type="email" 
               required 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black border border-border rounded-lg p-3 text-white focus:border-primary outline-none" 
+              className="w-full bg-background border border-border rounded-lg p-3 text-foreground focus:border-primary outline-none" 
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Password</label>
+            <label className="block text-sm text-muted-foreground mb-1">Password</label>
             <input 
               type="password" 
               required 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black border border-border rounded-lg p-3 text-white focus:border-primary outline-none" 
+              className="w-full bg-background border border-border rounded-lg p-3 text-foreground focus:border-primary outline-none" 
             />
           </div>
           <button 
