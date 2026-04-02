@@ -22,15 +22,15 @@ export default function ThankYouPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <a 
-            href="https://calendly.com/your-business/demo" 
-            target="_blank" 
+          <a
+            href="https://calendly.com/macrawford1876/30min"
+            target="_blank"
             rel="noopener noreferrer"
             className="btn-primary inline-flex items-center justify-center gap-2"
           >
             Book Your Demo Call <ArrowRight size={18} />
           </a>
-          
+
           <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Return Home
           </Link>

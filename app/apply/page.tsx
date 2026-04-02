@@ -16,18 +16,11 @@ export default function ApplyPage() {
 
   const [formData, setFormData] = useState({
     full_name: "",
-    business_name: "",
     email: "",
     phone: "",
-    website_or_social: "",
     industry: "",
-    interested_service: "Lead Generation",
-    business_description: "",
-    current_challenge: "",
-    goals: "",
-    monthly_budget: "$1,000 - $3,000",
+    monthly_revenue: "Under $10,000",
     ready_to_start: "Immediately",
-    worked_with_agency_before: "No",
     why_good_fit: "",
     preferred_contact_method: "Email",
     consent_to_contact: false,
@@ -135,14 +128,13 @@ export default function ApplyPage() {
               </div>
             </div>
           )}
-
           {/* STEP 3: Revenue Info */}
           {step === 3 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
               <h2 className="text-xl font-semibold mb-4 border-b border-border pb-2">3. Revenue per month</h2>
               <div>
                 <label className="block text-sm text-muted-foreground mb-1">Approximate monthly revenue?</label>
-                <select value={formData.monthly_budget} onChange={(e: any) => updateForm('monthly_budget', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
+                <select value={formData.monthly_revenue} onChange={(e: any) => updateForm('monthly_revenue', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
                   <option>Under $10,000</option>
                   <option>$10,000 - $30,000</option>
                   <option>$30,000 - $100,000</option>
@@ -157,17 +149,6 @@ export default function ApplyPage() {
                   <option>Within a month</option>
                   <option>Just researching</option>
                 </select>
-              </div>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Have you worked with a marketer or agency before?</label>
-                <div className="flex gap-4 mt-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="worked_before" value="Yes" checked={formData.worked_with_agency_before === "Yes"} onChange={() => updateForm('worked_with_agency_before', "Yes")} /> Yes
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="worked_before" value="No" checked={formData.worked_with_agency_before === "No"} onChange={() => updateForm('worked_with_agency_before', "No")} /> No
-                  </label>
-                </div>
               </div>
             </div>
           )}
