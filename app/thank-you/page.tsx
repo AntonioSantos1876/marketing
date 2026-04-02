@@ -21,9 +21,20 @@ export default function ThankYouPage() {
           </p>
         </div>
 
-        <Link href="/" className="btn-secondary inline-flex items-center gap-2">
-          Return Home <ArrowRight size={18} />
-        </Link>
+        <div className="flex flex-col gap-4">
+          <a 
+            href="https://calendly.com/your-business/demo" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center justify-center gap-2"
+          >
+            Book Your Demo Call <ArrowRight size={18} />
+          </a>
+          
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Return Home
+          </Link>
+        </div>
       </div>
     </main>
   );
