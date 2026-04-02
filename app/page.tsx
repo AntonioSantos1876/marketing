@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, TrendingUp, Users, Target, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, TrendingUp, Users, ShieldCheck, DollarSign } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -39,41 +39,25 @@ export default function LandingPage() {
       </section>
 
       {/* 2. SHORT DESCRIPTION / OFFER SECTION */}
-      <section className="w-full py-24 px-4 md:px-8 bg-card border-y border-border">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do.</h2>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              We don't offer generic templates or overnight miracles. We build custom lead generation and brand visibility systems that connect you with your ideal customers. 
-            </p>
-            <ul className="space-y-4">
-              {[
-                "Targeted Ad Strategy that actually converts",
-                "Scalable Client Acquisition Systems",
-                "Advanced Customer Targeting",
-                "Premium Digital Presence Improvement"
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="text-primary shrink-0 mt-1" size={20} />
-                  <span className="text-muted-foreground">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="glass-card flex flex-col justify-center">
-            <h3 className="text-2xl font-bold mb-4 border-b border-border pb-4">Who This Is For</h3>
-            <ul className="space-y-4 text-muted-foreground">
-              <li className="flex items-center gap-3"><Target className="text-primary" size={20} /> Business owners ready to grow</li>
-              <li className="flex items-center gap-3"><Target className="text-primary" size={20} /> Companies ready to invest in real marketing</li>
-              <li className="flex items-center gap-3"><Target className="text-primary" size={20} /> Brands that need better lead generation</li>
-            </ul>
-            <div className="mt-8 p-4 bg-red-900/10 border border-red-500/20 rounded-lg">
-              <p className="text-sm text-red-200">
-                <span className="font-bold text-red-400">Not for everyone:</span> We do not work with businesses looking for instant miracles or companies unprepared to invest in their own growth.
-              </p>
-            </div>
-          </div>
+      <section className="w-full py-24 px-4 md:px-8 bg-card border-y border-border text-center">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">What We Do.</h2>
+          <p className="text-lg text-muted-foreground mb-12 leading-relaxed max-w-3xl">
+            We don't offer generic templates or overnight miracles. We build custom lead generation and brand visibility systems that connect you with your ideal customers. 
+          </p>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-left">
+            {[
+              "Targeted Ad Strategy that actually converts",
+              "Scalable Client Acquisition Systems",
+              "Advanced Customer Targeting",
+              "Premium Digital Presence Improvement"
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <CheckCircle2 className="text-primary shrink-0 mt-1" size={20} />
+                <span className="text-muted-foreground text-lg">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -91,7 +75,7 @@ export default function LandingPage() {
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
                 <TrendingUp className="text-primary" size={24} />
               </div>
-              <h4 className="text-4xl font-bold text-foreground mb-2">+240%</h4>
+              <h4 className="text-4xl font-bold text-foreground mb-2">240</h4>
               <p className="text-muted-foreground font-medium mb-4">Increased inquiries in 30 days</p>
               <p className="text-sm text-muted-foreground/80 italic">"They completely transformed how we capture leads. The quality of prospects is night and day."</p>
               <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
@@ -108,7 +92,7 @@ export default function LandingPage() {
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
                 <Users className="text-primary" size={24} />
               </div>
-              <h4 className="text-4xl font-bold text-foreground mb-2">50+</h4>
+              <h4 className="text-4xl font-bold text-foreground mb-2">30+</h4>
               <p className="text-muted-foreground font-medium mb-4">Qualified leads per week</p>
               <p className="text-sm text-muted-foreground/80 italic">"We had to pause our ads because we got too many highly qualified calls. Best problem to have."</p>
               <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
@@ -123,7 +107,7 @@ export default function LandingPage() {
             {/* Stat Card 3 */}
             <div className="glass-card hover:bg-card-hover transition-colors">
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <Target className="text-primary" size={24} />
+                <DollarSign className="text-primary" size={24} />
               </div>
               <h4 className="text-4xl font-bold text-foreground mb-2">$120k</h4>
               <p className="text-muted-foreground font-medium mb-4">Added revenue in Q1</p>
