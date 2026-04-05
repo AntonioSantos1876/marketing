@@ -10,7 +10,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const isLoginPage = pathname === "/admin/login";
-  const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -20,30 +19,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setIsSidebarOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        setLoading(false);
-        return;
-      }
-      
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session && !isLoginPage) {
-        router.push("/admin/login");
-      } else {
-        setLoading(false);
-      }
-    };
-    
-    checkAuth();
-  }, [pathname, isLoginPage, router]);
-
-  if (loading) {
-    return <div className="min-h-screen bg-background flex items-center justify-center text-foreground">Loading Admin...</div>;
-  }
-
   if (isLoginPage) {
-    return <div className="min-h-screen bg-background text-foreground">{children}</div>;
+    return <div className="h-screen overflow-hidden bg-background text-foreground">{children}</div>;
   }
 
   const handleLogout = async () => {
@@ -52,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground relative">
+    <div className="flex h-screen bg-background text-foreground relative overflow-hidden">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -67,54 +44,80 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         md:relative md:translate-x-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
+        {/* Sidebar Header / Branding */}
         <div className="p-6 border-b border-border flex items-center justify-between">
-          <h2 className="text-xl font-bold text-primary">Admin Portal</h2>
+          <Link href="/" className="font-heading font-bold text-lg tracking-tight text-foreground flex items-center gap-2 text-nowrap">
+            <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain rounded-md" />
+            Admin<span className="text-primary italic">Portal</span>
+          </Link>
           <button 
             onClick={() => setIsSidebarOpen(false)}
             className="md:hidden text-muted-foreground hover:text-foreground"
           >
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
-        <nav className="flex-1 p-4 space-y-2">
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
+          <p className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4 mt-2">Main Menu</p>
           <Link 
             href="/admin/dashboard" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname === '/admin/dashboard' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
+            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${pathname === '/admin/dashboard' ? 'bg-primary/10 text-primary border border-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'}`}
           >
-            <LayoutDashboard size={20} /> Dashboard
+            <LayoutDashboard size={18} /> Dashboard Overview
           </Link>
           <Link 
             href="/admin/leads" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname.startsWith('/admin/leads') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
+            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${pathname.startsWith('/admin/leads') ? 'bg-primary/10 text-primary border border-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'}`}
           >
-            <Users size={20} /> Lead Management
+            <Users size={18} /> Lead Management
           </Link>
         </nav>
-        <div className="p-4 border-t border-border">
+
+        {/* Footer / User Profile */}
+        <div className="p-4 border-t border-border bg-muted/20">
+          <div className="mb-4 px-4 py-3 rounded-xl bg-card border border-border/50 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">A</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold truncate text-foreground">Admin User</p>
+              <p className="text-[10px] text-muted-foreground truncate">Portal Manager</p>
+            </div>
+          </div>
           <button 
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-colors"
+            className="flex w-full items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
           >
-            <LogOut size={20} /> Logout
+            <LogOut size={18} /> Sign Out
           </button>
         </div>
       </aside>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur-md flex items-center justify-between px-4">
-          <button 
-            onClick={() => setIsSidebarOpen(true)}
-            className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Menu size={24} />
-          </button>
-          <h2 className="text-lg font-bold text-primary">Admin</h2>
-          <div className="w-8" /> {/* Balance */}
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        {/* Header (Always Visible Title for Small Screens) */}
+        <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 flex-shrink-0">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="md:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Menu size={24} />
+            </button>
+            <h2 className="text-lg font-bold text-foreground">
+              {pathname === '/admin/dashboard' ? 'Dashboard Summary' : pathname.startsWith('/admin/leads') ? 'Lead Database' : 'Portal'}
+            </h2>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] font-bold text-green-500 uppercase tracking-tighter">Live System</span>
+            </div>
+          </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-4 md:p-8">
+        <main className="flex-1 overflow-auto p-4 md:p-8 min-h-0 relative">
           {children}
         </main>
       </div>

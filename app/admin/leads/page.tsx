@@ -2,111 +2,226 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Eye, Search } from "lucide-react";
+import { Eye, Search, Download, Filter, ChevronDown, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function LeadsTable() {
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLeads = async () => {
-      setLoading(true);
-      if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        const { data, error } = await supabase
-          .from('leads')
-          .select('id, full_name, business_name, email, lead_status, created_at, monthly_budget, ready_to_start')
-          .order('created_at', { ascending: false });
-        
-        if (data) setLeads(data);
-      }
-      setLoading(false);
-    };
-    
     fetchLeads();
   }, []);
 
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'New': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'Reviewed': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'Contacted': return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
-      case 'Qualified': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'Unqualified': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      case 'Closed': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+  const fetchLeads = async () => {
+    setLoading(true);
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (data) setLeads(data);
     }
+    setLoading(false);
   };
 
-  const filteredLeads = leads.filter(l => 
-    l.full_name.toLowerCase().includes(search.toLowerCase()) || 
-    l.business_name.toLowerCase().includes(search.toLowerCase())
-  );
+  const updateLeadStatus = async (id: string, newStatus: string) => {
+    setUpdatingId(id);
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { error } = await supabase
+        .from('leads')
+        .update({ lead_status: newStatus, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      
+      if (!error) {
+        setLeads(prev => prev.map(l => l.id === id ? { ...l, lead_status: newStatus } : l));
+      }
+    }
+    setUpdatingId(null);
+  };
+
+  const exportToCSV = () => {
+    if (leads.length === 0) return;
+    
+    const headers = ["Full Name", "Email", "Phone", "Business", "Industry", "Budget", "Timeline", "Status", "Date"];
+    const rows = leads.map(l => [
+      l.full_name,
+      l.email,
+      l.phone || "N/A",
+      l.business_name || "N/A",
+      l.industry || "N/A",
+      l.monthly_budget || l.monthly_revenue || "N/A",
+      l.ready_to_start || "N/A",
+      l.lead_status || "New",
+      new Date(l.created_at).toLocaleDateString()
+    ]);
+
+    const csvContent = [headers, ...rows].map(e => e.map(field => `"${field}"`).join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `leads_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const filteredLeads = leads.filter(l => {
+    const matchesSearch = l.full_name.toLowerCase().includes(search.toLowerCase()) || 
+                         (l.business_name && l.business_name.toLowerCase().includes(search.toLowerCase()));
+    const matchesStatus = statusFilter === "All" || (l.lead_status || "New") === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
-    <div className="p-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <h1 className="text-3xl font-bold">Lead Management</h1>
+    <div className="h-full flex flex-col gap-6 md:gap-8 animate-in fade-in duration-500 overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 flex-shrink-0">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Lead Management</h1>
+          <p className="text-muted-foreground text-sm">Manage and track your incoming business applications.</p>
+        </div>
         
-        <div className="relative w-full md:w-64">
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <button 
+            onClick={exportToCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-bold border border-border transition-all"
+          >
+            <Download size={16} /> Export CSV
+          </button>
+        </div>
+      </div>
+
+      {/* FILTERS BAR */}
+      <div className="glass-card p-4 flex flex-col md:flex-row items-center gap-4 border border-border/40 flex-shrink-0">
+        <div className="relative flex-1 w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <input 
             type="text" 
-            placeholder="Search leads..." 
+            placeholder="Search by name or business..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border rounded-lg py-2 pl-10 pr-4 text-sm text-foreground focus:border-primary outline-none"
+            className="w-full bg-background border border-border rounded-lg py-2.5 pl-10 pr-4 text-sm text-foreground focus:border-primary outline-none transition-all"
           />
+        </div>
+        
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full md:w-48">
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full bg-background border border-border rounded-lg py-2.5 pl-10 pr-4 text-sm text-foreground appearance-none outline-none focus:border-primary"
+            >
+              <option value="All">All Statuses</option>
+              <option value="New">New</option>
+              <option value="Reviewed">Reviewed</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Unqualified">Unqualified</option>
+              <option value="Closed">Closed</option>
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" size={16} />
+          </div>
         </div>
       </div>
       
-      <div className="glass-card overflow-x-auto p-0 border border-border relative">
-        {loading ? (
-          <div className="p-8 text-center text-muted-foreground">Loading leads...</div>
-        ) : (
-          <table className="w-full text-left">
-            <thead className="bg-muted/50 border-b border-border text-sm text-muted-foreground">
+      <div className="flex-1 min-h-0 glass-card overflow-hidden border border-border/40 flex flex-col">
+        <div className="flex-1 overflow-y-auto scrollbar-thin">
+          <table className="w-full text-left text-sm relative">
+            <thead className="bg-muted/50 border-b border-border text-[11px] uppercase tracking-wider font-bold text-muted-foreground sticky top-0 z-10 backdrop-blur-md">
               <tr>
-                <th className="p-4 font-medium">Name</th>
-                <th className="p-4 font-medium">Business</th>
-                <th className="p-4 font-medium">Budget</th>
-                <th className="p-4 font-medium">Timeline</th>
-                <th className="p-4 font-medium">Date</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Actions</th>
+                <th className="p-4">Applicant</th>
+                <th className="p-4">Business</th>
+                <th className="p-4">Engagement</th>
+                <th className="p-4">Date</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border text-sm">
-              {filteredLeads.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="p-8 text-center text-muted-foreground/80">No leads found.</td>
-                </tr>
+            <tbody className="divide-y divide-border">
+              {loading ? (
+                <tr><td colSpan={6} className="p-12 text-center text-muted-foreground">Loading lead database...</td></tr>
+              ) : filteredLeads.length === 0 ? (
+                <tr><td colSpan={6} className="p-12 text-center text-muted-foreground font-medium italic">No leads found matching your criteria.</td></tr>
               ) : (
                 filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-muted/50 transition-colors">
-                    <td className="p-4 font-medium text-foreground">{lead.full_name}</td>
-                    <td className="p-4 text-foreground">{lead.business_name}</td>
-                    <td className="p-4 text-foreground">{lead.monthly_budget}</td>
-                    <td className="p-4 text-foreground">{lead.ready_to_start}</td>
-                    <td className="p-4 text-muted-foreground">{new Date(lead.created_at).toLocaleDateString()}</td>
+                  <tr key={lead.id} className="hover:bg-muted/30 transition-colors group">
                     <td className="p-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs border ${getStatusColor(lead.lead_status || 'New')}`}>
-                        {lead.lead_status || 'New'}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
+                          {lead.full_name[0]}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold text-foreground truncate">{lead.full_name}</p>
+                          <p className="text-[11px] text-muted-foreground truncate">{lead.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4 font-medium text-foreground truncate max-w-[150px]">{lead.business_name || "N/A"}</td>
+                    <td className="p-4">
+                      <div className="space-y-1">
+                        <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-tighter">Budget / Timeline</p>
+                        <p className="text-foreground truncate">{lead.monthly_budget || lead.monthly_revenue} • {lead.ready_to_start}</p>
+                      </div>
+                    </td>
+                    <td className="p-4 text-muted-foreground font-medium whitespace-nowrap">
+                      {new Date(lead.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </td>
+                    <td className="p-4">
+                      <div className="relative inline-block w-32">
+                        <select 
+                          value={lead.lead_status || 'New'}
+                          disabled={updatingId === lead.id}
+                          onChange={(e) => updateLeadStatus(lead.id, e.target.value)}
+                          className={`w-full appearance-none px-2.5 py-1.5 rounded text-[10px] font-bold uppercase border bg-transparent outline-none cursor-pointer transition-all ${updatingId === lead.id ? 'opacity-50' : ''} ${getStatusColorStyle(lead.lead_status || 'New')}`}
+                        >
+                          <option value="New">New</option>
+                          <option value="Reviewed">Reviewed</option>
+                          <option value="Contacted">Contacted</option>
+                          <option value="Qualified">Qualified</option>
+                          <option value="Unqualified">Unqualified</option>
+                          <option value="Closed">Closed</option>
+                        </select>
+                        <div className="absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none opacity-60">
+                          <ChevronDown size={10} />
+                        </div>
+                      </div>
                     </td>
                     <td className="p-4 text-right">
-                      <Link href={`/admin/leads/${lead.id}`} className="inline-flex items-center gap-1 text-primary hover:text-foreground transition-colors">
-                        <Eye size={16} /> View
-                      </Link>
+                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                        <Link 
+                          href={`/admin/leads/${lead.id}`} 
+                          className="flex items-center gap-1 hover:text-primary transition-colors font-bold text-xs bg-muted py-1.5 px-3 rounded whitespace-nowrap"
+                        >
+                          <Eye size={14} /> Full Profile
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
-        )}
+        </div>
       </div>
     </div>
   );
+}
+
+function getStatusColorStyle(status: string) {
+  switch(status) {
+    case 'New': return 'border-blue-500/30 text-blue-500 bg-blue-500/5 hover:bg-blue-500/10';
+    case 'Reviewed': return 'border-yellow-500/30 text-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10';
+    case 'Contacted': return 'border-purple-500/30 text-purple-500 bg-purple-500/5 hover:bg-purple-500/10';
+    case 'Qualified': return 'border-green-500/30 text-green-500 bg-green-500/5 hover:bg-green-500/10';
+    case 'Unqualified': return 'border-red-500/30 text-red-500 bg-red-500/5 hover:bg-red-500/10';
+    case 'Closed': return 'border-gray-500/30 text-gray-500 bg-gray-500/5 hover:bg-gray-500/10';
+    default: return 'border-gray-500/30 text-gray-500 bg-gray-500/5 hover:bg-gray-500/10';
+  }
 }

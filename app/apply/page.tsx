@@ -46,7 +46,7 @@ export default function ApplyPage() {
   const prevStep = () => setStep((prev: number) => prev - 1);
 
   const submitForm = async (e: any) => {
-    e.preventDefault();
+    e?.preventDefault?.();
     if (!formData.consent_to_contact) {
       setError("You must consent to be contacted to submit the application.");
       return;
