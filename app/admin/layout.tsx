@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-background text-foreground relative overflow-hidden">
+    <div data-admin-layout className="flex h-screen w-screen bg-background text-foreground overflow-hidden">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -58,8 +58,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-card/80 backdrop-blur-xl border-r border-border/50 flex flex-col transition-transform duration-300 ease-in-out
-        md:relative md:translate-x-0
+        fixed inset-y-0 left-0 z-50 flex-shrink-0 w-64 h-screen bg-card/95 backdrop-blur-xl border-r border-border/50 flex flex-col transition-transform duration-300 ease-in-out
+        md:sticky md:top-0 md:translate-x-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Sidebar Header / Branding */}
@@ -114,9 +114,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-muted/10">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-muted/10">
         {/* Header (Always Visible Title for Small Screens) */}
-        <header className="sticky top-0 z-30 h-16 border-b border-border/50 bg-background/60 backdrop-blur-md flex items-center justify-between px-4 md:px-8 flex-shrink-0">
+        <header className="relative z-30 h-16 border-b border-border/50 bg-background/95 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsSidebarOpen(true)}

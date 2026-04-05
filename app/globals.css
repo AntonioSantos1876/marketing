@@ -13,6 +13,7 @@
     --border: 229 231 235;
     --muted: 243 244 246;
     --muted-foreground: 107 114 128;
+    --primary-rgb: 249, 115, 22;
   }
 
   .dark {
@@ -55,25 +56,51 @@
   }
 }
 
-/* Smooth Scrolling */
+/* Smooth scrolling for public pages */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
+/* Lock body scroll for admin portal — scrolling is handled inside containers */
+body:has([data-admin-layout]) {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Global scrollbar — slim orange accent */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2A2A2A;
-  border-radius: 5px;
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(249 115 22);
+  background: rgba(249, 115, 22, 0.6);
+}
+
+/* Admin internal scrollbars — ultra-thin with transparent track */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.2);
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.5);
 }
