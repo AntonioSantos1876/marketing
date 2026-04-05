@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -56,15 +56,18 @@ export async function proxy(request: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
+  const isLoginPage = request.nextUrl.pathname === '/admin/login';
+  const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
+
   // If user is not logged in and trying to access admin (except login)
-  if (!session && request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login') {
+  if (!session && isAdminPath && !isLoginPage) {
     const url = request.nextUrl.clone();
     url.pathname = '/admin/login';
     return NextResponse.redirect(url);
   }
 
   // If user is logged in and trying to access login page, redirect to dashboard
-  if (session && request.nextUrl.pathname === '/admin/login') {
+  if (session && isLoginPage) {
     const url = request.nextUrl.clone();
     url.pathname = '/admin/dashboard';
     return NextResponse.redirect(url);

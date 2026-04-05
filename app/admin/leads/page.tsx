@@ -80,19 +80,19 @@ export default function LeadsTable() {
   });
 
   return (
-    <div className="h-full flex flex-col gap-6 md:gap-8 animate-in fade-in duration-500 overflow-hidden">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 flex-shrink-0">
+    <div className="h-full flex flex-col gap-6 animate-in fade-in duration-700 min-h-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 flex-shrink-0">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Lead Management</h1>
-          <p className="text-muted-foreground text-sm">Manage and track your incoming business applications.</p>
+          <h2 className="text-2xl font-bold text-foreground">Lead Management</h2>
+          <p className="text-muted-foreground text-xs mt-0.5 uppercase tracking-widest opacity-60">Manage and track your business applications</p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <button 
             onClick={exportToCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-bold border border-border transition-all"
+            className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-xl text-xs font-bold border border-border/50 transition-all hover:border-primary/30"
           >
-            <Download size={16} /> Export CSV
+            <Download size={14} /> Export CSV
           </button>
         </div>
       </div>
@@ -132,7 +132,7 @@ export default function LeadsTable() {
       </div>
       
       <div className="flex-1 min-h-0 glass-card overflow-hidden border border-border/40 flex flex-col">
-        <div className="flex-1 overflow-y-auto scrollbar-thin">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
           <table className="w-full text-left text-sm relative">
             <thead className="bg-muted/50 border-b border-border text-[11px] uppercase tracking-wider font-bold text-muted-foreground sticky top-0 z-10 backdrop-blur-md">
               <tr>

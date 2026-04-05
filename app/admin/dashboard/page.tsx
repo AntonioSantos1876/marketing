@@ -78,9 +78,9 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="h-full flex flex-col gap-6 md:gap-8 animate-in fade-in duration-500 overflow-hidden">
+    <div className="h-full flex flex-col gap-6 animate-in fade-in duration-700 min-h-0">
       {/* HEADER METRICS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-shrink-0">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-shrink-0">
         <MetricCard 
           title="Total Leads" 
           value={metrics.total} 
@@ -109,20 +109,20 @@ export default function AdminDashboard() {
         />
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex-1 min-h-0 grid grid-cols-1 xl:grid-cols-3 gap-6 overflow-hidden md:overflow-visible">
         {/* ANALYTICS CHARTS & RECENT LEADS */}
-        <div className="lg:col-span-2 flex flex-col gap-6 min-h-0">
-          {/* Chart Section - Fixed relative height */}
-          <div className="glass-card p-6 flex flex-col flex-shrink-0">
+        <div className="xl:col-span-2 flex flex-col gap-6 min-h-0">
+          {/* Chart Section */}
+          <div className="glass-card p-6 flex flex-col flex-shrink-0 min-h-[220px]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-foreground leading-tight">Lead Distribution</h3>
-              <Calendar size={18} className="text-muted-foreground" />
+              <h3 className="text-sm font-bold text-foreground uppercase tracking-widest opacity-70">Lead Distribution</h3>
+              <Calendar size={18} className="text-muted-foreground opacity-50" />
             </div>
             
-            <div className="flex flex-row items-center justify-around gap-4 py-2">
+            <div className="flex flex-col sm:flex-row items-center justify-around gap-6 py-2 overflow-hidden">
               <div className="relative w-32 h-32 flex-shrink-0">
-                <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-                  <circle cx="18" cy="18" r="16" fill="transparent" stroke="currentColor" strokeWidth="3" className="text-muted/20"></circle>
+                <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90 drop-shadow-lg">
+                  <circle cx="18" cy="18" r="16" fill="transparent" stroke="currentColor" strokeWidth="3" className="text-muted/10"></circle>
                   <circle 
                     cx="18" cy="18" r="16" 
                     fill="transparent" 
@@ -134,56 +134,56 @@ export default function AdminDashboard() {
                   ></circle>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-xl font-bold">{metrics.qualified}</span>
-                  <span className="text-[8px] uppercase font-bold text-muted-foreground tracking-widest">Qualified</span>
+                  <span className="text-2xl font-bold tracking-tighter">{metrics.qualified}</span>
+                  <span className="text-[8px] uppercase font-bold text-muted-foreground tracking-widest mt-0.5">Qualified</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-3">
                 <LegendItem label="New" count={metrics.new} color="bg-blue-400" />
                 <LegendItem label="Contacted" count={metrics.contacted} color="bg-purple-400" />
-                <LegendItem label="Qualified" count={metrics.qualified} color="bg-primary" />
+                <LegendItem label="Qualified" count={metrics.qualified} color="bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.4)]" />
                 <LegendItem label="Others" count={metrics.total - metrics.new - metrics.contacted - metrics.qualified} color="bg-muted" />
               </div>
             </div>
           </div>
 
-          {/* Recent Leads Section - Takes remaining height */}
-          <div className="glass-card flex flex-col flex-1 min-h-0 overflow-hidden">
+          {/* Recent Leads Section */}
+          <div className="glass-card flex flex-col flex-1 min-h-[300px] overflow-hidden">
             <div className="p-6 pb-4 flex items-center justify-between flex-shrink-0">
-              <h3 className="text-lg font-bold">Recent Leads</h3>
-              <Link href="/admin/leads" className="text-xs text-primary hover:underline flex items-center gap-1 font-bold italic">
-                View All <ArrowRight size={12} />
+              <h3 className="text-sm font-bold text-foreground uppercase tracking-widest opacity-70">Recent Leads</h3>
+              <Link href="/admin/leads" className="text-[10px] text-primary hover:text-primary/80 flex items-center gap-1 font-bold uppercase tracking-wider transition-colors">
+                View Database <ArrowRight size={12} />
               </Link>
             </div>
-            <div className="flex-1 overflow-y-auto px-6 pb-6 scrollbar-thin">
-              <table className="w-full text-left text-xs relative">
-                <thead className="text-muted-foreground border-b border-border sticky top-0 bg-background/95 backdrop-blur-sm z-10">
+            <div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar">
+              <table className="w-full text-left text-xs relative border-separate border-spacing-0">
+                <thead className="text-muted-foreground sticky top-0 bg-background/95 backdrop-blur-sm z-10">
                   <tr>
-                    <th className="py-2 pr-4 font-bold uppercase tracking-tighter">Name</th>
-                    <th className="py-2 pr-4 font-bold uppercase tracking-tighter">Budget</th>
-                    <th className="py-2 pr-4 font-bold uppercase tracking-tighter">Status</th>
-                    <th className="py-2 font-bold uppercase tracking-tighter text-right">Action</th>
+                    <th className="py-3 pr-4 font-bold uppercase tracking-tighter border-b border-border/50">Lead Name</th>
+                    <th className="py-3 pr-4 font-bold uppercase tracking-tighter border-b border-border/50">Revenue/Budget</th>
+                    <th className="py-3 pr-4 font-bold uppercase tracking-tighter border-b border-border/50">Current Status</th>
+                    <th className="py-3 font-bold uppercase tracking-tighter text-right border-b border-border/50">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody className="divide-y divide-border/30">
                   {recentLeads.length === 0 ? (
-                    <tr><td colSpan={4} className="py-8 text-center text-muted-foreground italic">No recent activity detected.</td></tr>
+                    <tr><td colSpan={4} className="py-12 text-center text-muted-foreground italic opacity-50">No recent activity detected.</td></tr>
                   ) : (
                     recentLeads.map((lead) => (
-                      <tr key={lead.id} className="group hover:bg-muted/30 transition-colors">
-                        <td className="py-3 pr-4">
-                          <p className="font-bold text-foreground">{lead.full_name}</p>
-                          <p className="text-[10px] text-muted-foreground">{new Date(lead.created_at).toLocaleDateString()}</p>
+                      <tr key={lead.id} className="group hover:bg-primary/5 transition-all duration-200">
+                        <td className="py-4 pr-4">
+                          <p className="font-bold text-foreground group-hover:text-primary transition-colors">{lead.full_name}</p>
+                          <p className="text-[10px] text-muted-foreground opacity-60">{new Date(lead.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                         </td>
-                        <td className="py-3 pr-4 text-muted-foreground font-medium">{lead.monthly_budget || lead.monthly_revenue || "N/A"}</td>
-                        <td className="py-3 pr-4">
-                          <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${getStatusColor(lead.lead_status || 'New')}`}>
+                        <td className="py-4 pr-4 text-muted-foreground font-medium">{lead.monthly_budget || lead.monthly_revenue || "N/A"}</td>
+                        <td className="py-4 pr-4">
+                          <span className={`px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider ${getStatusColor(lead.lead_status || 'New')}`}>
                             {lead.lead_status || 'New'}
                           </span>
                         </td>
-                        <td className="py-3 text-right">
-                          <Link href={`/admin/leads/${lead.id}`} className="p-1.5 inline-block rounded-lg bg-muted group-hover:bg-primary/20 group-hover:text-primary transition-all">
+                        <td className="py-4 text-right">
+                          <Link href={`/admin/leads/${lead.id}`} className="size-8 inline-flex items-center justify-center rounded-xl bg-muted border border-border/50 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300">
                             <Eye size={14} />
                           </Link>
                         </td>
@@ -197,24 +197,25 @@ export default function AdminDashboard() {
         </div>
 
         {/* SIDEBAR WIDGETS */}
-        <div className="flex flex-col gap-6 min-h-0 overflow-y-auto pr-1 scrollbar-thin">
-          <div className="glass-card p-6 bg-primary/5 border-primary/20 flex-shrink-0">
-            <h3 className="font-bold flex items-center gap-2 mb-4 text-sm uppercase tracking-widest text-primary/80">
+        <div className="flex flex-col gap-6 min-h-0 overflow-y-auto pr-1 custom-scrollbar pb-4 md:pb-0">
+          <div className="glass-card p-6 bg-gradient-to-br from-primary/10 to-transparent border-primary/20 flex-shrink-0 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full translate-x-12 -translate-y-12 blur-3xl group-hover:bg-primary/20 transition-all"></div>
+            <h3 className="font-bold flex items-center gap-2 mb-4 text-xs uppercase tracking-widest text-primary/80">
               <TrendingUp size={16} className="text-primary" />
               Action Center
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-3 relative z-10">
               <ActionButton title="Export Sales Report" desc="Download leads as CSV" />
               <ActionButton title="Bulk Follow-up" desc="Draft emails for new leads" />
             </div>
           </div>
 
-          <div className="glass-card p-6 flex flex-col flex-1 min-h-0">
-            <h3 className="font-bold mb-6 text-sm uppercase tracking-widest text-muted-foreground flex items-center justify-between">
-              Recent Milestones
+          <div className="glass-card p-6 flex flex-col flex-1 min-h-[300px]">
+            <h3 className="font-bold mb-6 text-xs uppercase tracking-widest text-muted-foreground flex items-center justify-between opacity-70">
+              Activity Milestones
               <CheckCircle size={14} className="text-green-500" />
             </h3>
-            <div className="space-y-6 flex-1 overflow-y-auto scrollbar-thin pr-2">
+            <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
               <ActivityItem 
                 title="Goal Reached" 
                 desc="Collected 20 qualified leads this week." 

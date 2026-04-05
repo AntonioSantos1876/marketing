@@ -1,7 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
-// Make sure to add these to .env.local
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Ensure environment variables are loaded
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (!supabaseUrl || !supabaseAnonKey) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn("Supabase credentials missing. Local bypass mode may be active.");
+  }
+}
+
+export const supabase = createBrowserClient(
+  supabaseUrl, 
+  supabaseAnonKey
+);
