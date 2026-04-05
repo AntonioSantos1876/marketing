@@ -1,7 +1,5 @@
 "use client";
 
-// Temporary declaration to prevent 'process' TS error until node modules are installed
-declare var process: any;
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -31,11 +29,30 @@ export default function ApplyPage() {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    // Basic numeric check: digits, and optional leading +
+    return /^\+?[0-9]{7,15}$/.test(phone.replace(/[\s-()]/g, ''));
+  };
+
   const nextStep = () => {
     // Basic validation before moving to next step
-    if (step === 1 && (!formData.full_name || !formData.email)) {
-      setError("Please fill out all required fields to continue.");
-      return;
+    if (step === 1) {
+      if (!formData.full_name || !formData.email) {
+        setError("Please fill out all required fields to continue.");
+        return;
+      }
+      if (!validateEmail(formData.email)) {
+        setError("Please enter a valid email address (e.g. name@example.com).");
+        return;
+      }
+      if (formData.phone && !validatePhone(formData.phone)) {
+        setError("Please enter a valid phone number (digits only).");
+        return;
+      }
     }
     if (step === 3) {
       submitForm(null);
@@ -64,13 +81,30 @@ export default function ApplyPage() {
     }
 
     try {
-      const { error: dbError } = await supabase.from('leads').insert([formData]);
+      // Filter out fields that are NOT in the database table 'leads'
+      // 'worked_with_agency' is currently not in the schema.sql columns
+      const { ...submissionData } = formData;
+      // For now, let's omit 'worked_with_agency' from the database insert (it will stay in local state)
+      const sanitizedData = {
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone,
+        industry: formData.industry,
+        monthly_revenue: formData.monthly_revenue,
+        ready_to_start: formData.ready_to_start,
+        worked_with_agency: formData.worked_with_agency,
+        why_good_fit: formData.why_good_fit,
+        preferred_contact_method: formData.preferred_contact_method,
+        consent_to_contact: formData.consent_to_contact
+      };
+
+      const { error: dbError } = await supabase.from('leads').insert([sanitizedData]);
       
       if (dbError) throw dbError;
       
       router.push("/thank-you");
     } catch (err: any) {
-      console.error(err);
+      console.error("Submission error:", err);
       setError("An error occurred while submitting your application. Please try again.");
       setIsSubmitting(false);
     }
@@ -115,8 +149,20 @@ export default function ApplyPage() {
                   <input required type="email" value={formData.email} onChange={(e: any) => updateForm('email', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm text-muted-foreground mb-1">Phone Number</label>
-                  <input type="tel" value={formData.phone} onChange={(e: any) => updateForm('phone', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
+                  <label className="block text-sm text-muted-foreground mb-1">Phone Number *</label>
+                  <input required type="tel" value={formData.phone} onChange={(e: any) => updateForm('phone', e.target.value)} placeholder="e.g. 1234567890" className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
+                </div>
+                <div className="md:col-span-2 flex items-start gap-3 pt-2">
+                  <input 
+                    type="checkbox" 
+                    id="consent"
+                    checked={formData.consent_to_contact} 
+                    onChange={(e: any) => updateForm('consent_to_contact', e.target.checked)} 
+                    className="mt-1 w-4 h-4 rounded border-border bg-background text-primary focus:ring-primary"
+                  />
+                  <label htmlFor="consent" className="text-sm text-muted-foreground leading-tight">
+                    I consent to be contacted via email or phone regarding my application and future marketing services.
+                  </label>
                 </div>
               </div>
             </div>

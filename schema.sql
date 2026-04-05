@@ -13,6 +13,7 @@ create table leads (
   industry text,
   monthly_revenue text,
   ready_to_start text,
+  worked_with_agency text,
   why_good_fit text,
   preferred_contact_method text,
   consent_to_contact boolean default false,
