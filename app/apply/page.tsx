@@ -21,9 +21,10 @@ export default function ApplyPage() {
     industry: "",
     monthly_revenue: "Under $10,000",
     ready_to_start: "Immediately",
+    worked_with_agency: "Not yet",
     why_good_fit: "",
     preferred_contact_method: "Email",
-    consent_to_contact: false,
+    consent_to_contact: true,
   });
 
   const updateForm = (field: string, value: string | boolean) => {
@@ -35,6 +36,9 @@ export default function ApplyPage() {
     if (step === 1 && (!formData.full_name || !formData.email)) {
       setError("Please fill out all required fields to continue.");
       return;
+    }
+    if (step === 3) {
+      submitForm(null);
     }
     setError(null);
     setStep((prev: number) => prev + 1);
@@ -150,32 +154,41 @@ export default function ApplyPage() {
                   <option>Just researching</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-sm text-muted-foreground mb-1">Have you worked with a marketing agency before?</label>
+                <select value={formData.worked_with_agency} onChange={(e: any) => updateForm('worked_with_agency', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
+                  <option>Not yet</option>
+                  <option>Yes, in the past</option>
+                  <option>Yes, currently working with one</option>
+                </select>
+              </div>
             </div>
           )}
 
-          {/* STEP 4: Final Questions */}
+          {/* STEP 4: Success & Calendly */}
           {step === 4 && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-              <h2 className="text-xl font-semibold mb-4 border-b border-border pb-2">4. Final Details</h2>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Why do you feel you are a good fit for this service? *</label>
-                <textarea required rows={3} value={formData.why_good_fit} onChange={(e: any) => updateForm('why_good_fit', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Preferred contact method</label>
-                <select value={formData.preferred_contact_method} onChange={(e: any) => updateForm('preferred_contact_method', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
-                  <option>Email</option>
-                  <option>Phone Call</option>
-                  <option>Text Message</option>
-                </select>
-              </div>
-              <div className="pt-4 border-t border-border">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" required className="mt-1" checked={formData.consent_to_contact} onChange={(e: any) => updateForm('consent_to_contact', e.target.checked)} />
-                  <span className="text-sm text-muted-foreground">
-                    I consent to be contacted regarding this application and agree that I am a serious business owner actively looking to invest in my growth.
-                  </span>
-                </label>
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 py-8 text-center px-4">
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary">
+                  <CheckCircle2 size={40} />
+                </div>
+                <h2 className="text-3xl font-bold mb-4">Application Submitted!</h2>
+                <p className="text-muted-foreground text-lg mb-8 max-w-md mx-auto">
+                  We've received your details. To expedite the process, please book your free growth consultation call below.
+                </p>
+                
+                <a 
+                  href="https://calendly.com/macrawford1876/30min" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full max-w-sm flex items-center justify-center gap-3 text-xl py-5"
+                >
+                  Book Your Free Demo <ArrowRight size={24} />
+                </a>
+                
+                <p className="mt-6 text-sm text-muted-foreground italic">
+                  * Note: You will be redirected to our scheduling page.
+                </p>
               </div>
             </div>
           )}
@@ -189,13 +202,9 @@ export default function ApplyPage() {
             
             {step < 4 ? (
               <button type="button" onClick={nextStep} className="btn-primary flex items-center gap-2 py-2 px-6">
-                Next Step <ArrowRight size={18} />
+                {step === 3 ? "Submit & Continue" : "Next Step"} <ArrowRight size={18} />
               </button>
-            ) : (
-              <button type="submit" disabled={isSubmitting} className="btn-primary flex items-center gap-2 py-2 px-8">
-                {isSubmitting ? "Submitting..." : "Submit Application"} <CheckCircle2 size={18} />
-              </button>
-            )}
+            ) : null}
           </div>
         </form>
       </div>

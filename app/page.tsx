@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, TrendingUp, Users, ShieldCheck, DollarSign } from "lucide-react";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 
 export default function LandingPage() {
   return (
@@ -26,14 +27,16 @@ export default function LandingPage() {
           
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-6">
             <Link href="/apply" className="btn-primary flex items-center justify-center gap-2 text-lg">
-              See If You Qualify <ArrowRight size={20} />
+              Book Free Demo Call <ArrowRight size={20} />
             </Link>
           </div>
           
-          <div className="pt-12 text-muted-foreground/80 text-sm flex gap-6 justify-center">
-            <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary" /> Proven Systems</span>
-            <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary" /> Selective Client Roster</span>
-            <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary" /> High-Ticket Results</span>
+          <div className="pt-8 md:pt-12 w-full text-muted-foreground/80 text-sm flex justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+              <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary shrink-0" /> <span>Proven Systems</span></span>
+              <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary shrink-0" /> <span>Selective Client Roster</span></span>
+              <span className="flex items-center gap-2"><CheckCircle2 size={16} className="text-primary shrink-0" /> <span>High-Ticket Results</span></span>
+            </div>
           </div>
         </div>
       </section>
@@ -69,58 +72,7 @@ export default function LandingPage() {
             <p className="text-muted-foreground text-lg">Don't just take our word for it.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Stat Card 1 */}
-            <div className="glass-card hover:bg-card-hover transition-colors">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <TrendingUp className="text-primary" size={24} />
-              </div>
-              <h4 className="text-4xl font-bold text-foreground mb-2">240</h4>
-              <p className="text-muted-foreground font-medium mb-4">Increased inquiries in 30 days</p>
-              <p className="text-sm text-muted-foreground/80 italic">"They completely transformed how we capture leads. The quality of prospects is night and day."</p>
-              <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
-                <div className="w-10 h-10 bg-muted rounded-full"></div>
-                <div>
-                  <p className="text-sm font-bold">Sarah J.</p>
-                  <p className="text-xs text-muted-foreground/80">Premium Consultant</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Stat Card 2 */}
-            <div className="glass-card hover:bg-card-hover transition-colors">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <Users className="text-primary" size={24} />
-              </div>
-              <h4 className="text-4xl font-bold text-foreground mb-2">30+</h4>
-              <p className="text-muted-foreground font-medium mb-4">Qualified leads per week</p>
-              <p className="text-sm text-muted-foreground/80 italic">"We had to pause our ads because we got too many highly qualified calls. Best problem to have."</p>
-              <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
-                <div className="w-10 h-10 bg-muted rounded-full"></div>
-                <div>
-                  <p className="text-sm font-bold">Michael R.</p>
-                  <p className="text-xs text-muted-foreground/80">B2B SaaS Founder</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Stat Card 3 */}
-            <div className="glass-card hover:bg-card-hover transition-colors">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <DollarSign className="text-primary" size={24} />
-              </div>
-              <h4 className="text-4xl font-bold text-foreground mb-2">$120k</h4>
-              <p className="text-muted-foreground font-medium mb-4">Added revenue in Q1</p>
-              <p className="text-sm text-muted-foreground/80 italic">"The strategy was incredibly sharp. They filtered out the noise and brought us only serious buyers."</p>
-              <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
-                <div className="w-10 h-10 bg-muted rounded-full"></div>
-                <div>
-                  <p className="text-sm font-bold">David L.</p>
-                  <p className="text-xs text-muted-foreground/80">Service Business Owner</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TestimonialsCarousel />
         </div>
       </section>
 
@@ -156,38 +108,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 5. FAQ SECTION */}
-      <section className="w-full py-24 px-4 md:px-8 bg-card border-y border-border">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground text-lg">Everything you need to know before applying.</p>
-          </div>
-          
-          <div className="space-y-6">
-            <div className="bg-card border border-border p-6 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">Who is this service for?</h4>
-              <p className="text-muted-foreground">Our services are strictly for serious business owners and established brands who are ready to invest in scaling their lead generation and overall digital presence.</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">What happens after I apply?</h4>
-              <p className="text-muted-foreground">We carefully review your application to determine if you are a strategic fit. If qualified, our team will reach out via your preferred contact method within 24-48 hours to schedule a growth consultation.</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">Do you work with all types of businesses?</h4>
-              <p className="text-muted-foreground">No. We focus on quality over quantity. We do not work with businesses looking for "overnight viral success" or those unwilling to commit a proper monthly marketing budget.</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">How soon will I hear back?</h4>
-              <p className="text-muted-foreground">If your application is accepted, you will hear back from us typically within 24 to 48 hours.</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-xl">
-              <h4 className="text-xl font-bold mb-2">What makes this different from regular marketing help?</h4>
-              <p className="text-muted-foreground">We do not provide generic templates or random ad deployments. We build customized, high-converting growth systems specifically engineered to acquire premium clients and produce measurable ROI.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 6. QUALIFICATION / CLOSURE */}
       <section className="w-full py-32 px-4 md:px-8 text-center relative">
@@ -197,9 +117,6 @@ export default function LandingPage() {
           <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
             This application is for serious business owners ready to grow. We review each submission carefully and only reach out to qualified applicants.
           </p>
-          <Link href="/apply" className="btn-primary inline-flex items-center gap-2 text-xl px-12 py-4">
-            Apply Now <ArrowRight size={24} />
-          </Link>
         </div>
       </section>
       
