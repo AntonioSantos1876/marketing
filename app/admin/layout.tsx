@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div data-admin-layout className="flex h-screen w-screen bg-background text-foreground overflow-hidden">
+    <div data-admin-layout className="flex min-h-screen bg-background text-foreground relative">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -114,9 +114,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-muted/10">
-        {/* Header (Always Visible Title for Small Screens) */}
-        <header className="relative z-30 h-16 border-b border-border/50 bg-background/95 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 flex-shrink-0 shadow-sm">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen bg-muted/10">
+        {/* Header (Stay fixed) */}
+        <header className="sticky top-0 z-30 h-16 border-b border-border/50 bg-background/95 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsSidebarOpen(true)}
@@ -140,8 +140,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 min-h-0 relative custom-scrollbar">
-          <div className="max-w-[1600px] mx-auto h-full min-h-0">
+        <main className="flex-1 p-4 md:p-8 relative">
+          <div className="max-w-[1600px] mx-auto">
             {children}
           </div>
         </main>

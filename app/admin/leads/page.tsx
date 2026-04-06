@@ -80,7 +80,7 @@ export default function LeadsTable() {
   });
 
   return (
-    <div className="h-full flex flex-col gap-6 animate-in fade-in duration-700 min-h-0">
+    <div className="flex flex-col gap-6 animate-in fade-in duration-700">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 flex-shrink-0">
         <div>
           <h2 className="text-2xl font-bold text-foreground">Lead Management</h2>
@@ -131,10 +131,10 @@ export default function LeadsTable() {
         </div>
       </div>
       
-      <div className="flex-1 min-h-0 glass-card overflow-hidden border border-border/40 flex flex-col">
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+      <div className="glass-card border border-border/40 flex flex-col">
+        <div className="">
           <table className="w-full text-left text-sm relative">
-            <thead className="bg-muted/50 border-b border-border text-[11px] uppercase tracking-wider font-bold text-muted-foreground sticky top-0 z-10 backdrop-blur-md">
+            <thead className="bg-muted/50 border-b border-border text-[11px] uppercase tracking-wider font-bold text-muted-foreground">
               <tr>
                 <th className="p-4">Applicant</th>
                 <th className="p-4">Business</th>

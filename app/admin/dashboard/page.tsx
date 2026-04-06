@@ -17,6 +17,8 @@ export default function AdminDashboard() {
 
   const [recentLeads, setRecentLeads] = useState<any[]>([]);
   const [statusCounts, setStatusCounts] = useState<{ [key: string]: number }>({});
+  const [allLeads, setAllLeads] = useState<any[]>([]);
+  const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -62,6 +64,38 @@ export default function AdminDashboard() {
           return acc;
         }, {});
         setStatusCounts(counts);
+        setAllLeads(data);
+
+        // Derive Live Activities from Leads
+        const recentActivities: any[] = [];
+        if (qualifiedLeads > 0 && qualifiedLeads % 5 === 0) {
+          recentActivities.push({
+            id: 'goal-reached',
+            title: "Goal Reached",
+            desc: `Collected ${qualifiedLeads} qualified leads.`,
+            time: "Recently",
+            icon: <CheckCircle size={12} />,
+            color: "text-green-500"
+          });
+        }
+
+        data.slice(0, 5).forEach(lead => {
+          const status = lead.lead_status || 'New';
+          const diffHour = Math.floor((new Date().getTime() - new Date(lead.created_at).getTime()) / (1000 * 60 * 60));
+          const timeStr = diffHour === 0 ? 'Just now' : diffHour < 24 ? `${diffHour}h ago` : `${Math.floor(diffHour/24)}d ago`;
+          
+          if (status === 'New') {
+            recentActivities.push({ id: lead.id + '-new', title: "New Lead Received", desc: `${lead.full_name} submitted an application.`, time: timeStr, icon: <UserPlus size={12} />, color: "text-blue-500" });
+          } else if (status === 'Qualified') {
+             recentActivities.push({ id: lead.id + '-qual', title: "Lead Qualified", desc: `${lead.full_name} meets criteria!`, time: timeStr, icon: <CheckCircle size={12} />, color: "text-green-500" });
+          } else if (status === 'Contacted') {
+             recentActivities.push({ id: lead.id + '-cont', title: "Lead Contacted", desc: `Followed up with ${lead.full_name}.`, time: timeStr, icon: <PhoneCall size={12} />, color: "text-purple-500" });
+          } else {
+             recentActivities.push({ id: lead.id + '-upd', title: "Status Update", desc: `${lead.full_name} marked as ${status}.`, time: timeStr, icon: <TrendingUp size={12} />, color: "text-gray-500" });
+          }
+        });
+        
+        setActivities(recentActivities.slice(0, 4));
       }
       setLoading(false);
     };
@@ -71,14 +105,41 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex items-center justify-center h-full min-h-[400px]">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
+  const exportToCSV = () => {
+    if (allLeads.length === 0) return;
+    const headers = ["Lead Name", "Email", "Phone", "Business", "Budget", "Status", "Date"];
+    const rows = allLeads.map(l => [
+      l.full_name, l.email, l.phone || "N/A", l.business_name || "N/A", 
+      l.monthly_budget || l.monthly_revenue || "N/A", l.lead_status || "New", 
+      new Date(l.created_at).toLocaleDateString()
+    ]);
+    const csvContent = [headers, ...rows].map(e => e.map(field => `"${field}"`).join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `leads_export_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
+  const bulkFollowUp = () => {
+    const emails = allLeads.filter(l => l.lead_status === 'New').map(l => l.email).filter(Boolean);
+    if (emails.length === 0) {
+      alert("No new leads to follow up with!");
+      return;
+    }
+    const mailtoLink = `mailto:?bcc=${emails.join(',')}&subject=Follow up regarding your application&body=Hi there,%0D%0A%0D%0AWe received your application to work with us...`;
+    window.location.href = mailtoLink;
+  };
+
   return (
-    <div className="h-full flex flex-col gap-6 animate-in fade-in duration-700 min-h-0">
+    <div className="flex flex-col gap-6 animate-in fade-in duration-700">
       {/* HEADER METRICS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-shrink-0">
         <MetricCard 
@@ -109,9 +170,9 @@ export default function AdminDashboard() {
         />
       </div>
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 xl:grid-cols-3 gap-6 overflow-hidden md:overflow-visible">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* ANALYTICS CHARTS & RECENT LEADS */}
-        <div className="xl:col-span-2 flex flex-col gap-6 min-h-0">
+        <div className="xl:col-span-2 flex flex-col gap-6">
           {/* Chart Section */}
           <div className="glass-card p-6 flex flex-col flex-shrink-0 min-h-[220px]">
             <div className="flex items-center justify-between mb-4">
@@ -149,16 +210,16 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Leads Section */}
-          <div className="glass-card flex flex-col flex-1 min-h-[300px] overflow-hidden">
-            <div className="p-6 pb-4 flex items-center justify-between flex-shrink-0">
+          <div className="glass-card flex flex-col">
+            <div className="p-6 pb-4 flex items-center justify-between">
               <h3 className="text-sm font-bold text-foreground uppercase tracking-widest opacity-70">Recent Leads</h3>
               <Link href="/admin/leads" className="text-[10px] text-primary hover:text-primary/80 flex items-center gap-1 font-bold uppercase tracking-wider transition-colors">
                 View Database <ArrowRight size={12} />
               </Link>
             </div>
-            <div className="flex-1 overflow-y-auto px-6 pb-6 custom-scrollbar">
+            <div className="px-6 pb-6">
               <table className="w-full text-left text-xs relative border-separate border-spacing-0">
-                <thead className="text-muted-foreground sticky top-0 bg-background/95 backdrop-blur-sm z-10">
+                <thead className="text-muted-foreground">
                   <tr>
                     <th className="py-3 pr-4 font-bold uppercase tracking-tighter border-b border-border/50">Lead Name</th>
                     <th className="py-3 pr-4 font-bold uppercase tracking-tighter border-b border-border/50">Revenue/Budget</th>
@@ -197,7 +258,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* SIDEBAR WIDGETS */}
-        <div className="flex flex-col gap-6 min-h-0 overflow-y-auto pr-1 custom-scrollbar pb-4 md:pb-0">
+        <div className="flex flex-col gap-6 pb-4 md:pb-0">
           <div className="glass-card p-6 bg-gradient-to-br from-primary/10 to-transparent border-primary/20 flex-shrink-0 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full translate-x-12 -translate-y-12 blur-3xl group-hover:bg-primary/20 transition-all"></div>
             <h3 className="font-bold flex items-center gap-2 mb-4 text-xs uppercase tracking-widest text-primary/80">
@@ -205,38 +266,31 @@ export default function AdminDashboard() {
               Action Center
             </h3>
             <div className="space-y-3 relative z-10">
-              <ActionButton title="Export Sales Report" desc="Download leads as CSV" />
-              <ActionButton title="Bulk Follow-up" desc="Draft emails for new leads" />
+              <ActionButton title="Export Sales Report" desc="Download leads as CSV" onClick={exportToCSV} />
+              <ActionButton title="Bulk Follow-up" desc="Draft emails for new leads" onClick={bulkFollowUp} />
             </div>
           </div>
 
-          <div className="glass-card p-6 flex flex-col flex-1 min-h-[300px]">
+          <div className="glass-card p-6 flex flex-col">
             <h3 className="font-bold mb-6 text-xs uppercase tracking-widest text-muted-foreground flex items-center justify-between opacity-70">
               Activity Milestones
               <CheckCircle size={14} className="text-green-500" />
             </h3>
-            <div className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
-              <ActivityItem 
-                title="Goal Reached" 
-                desc="Collected 20 qualified leads this week." 
-                time="2h ago"
-                icon={<CheckCircle size={12} />}
-                color="text-green-500"
-              />
-              <ActivityItem 
-                title="System Update" 
-                desc="Lead routing logic was optimized." 
-                time="1d ago"
-                icon={<Users size={12} />}
-                color="text-blue-500"
-              />
-              <ActivityItem 
-                title="Status Change" 
-                desc="5 leads moved to Contacted." 
-                time="2d ago"
-                icon={<ArrowRight size={12} />}
-                color="text-purple-500"
-              />
+            <div className="space-y-6">
+              {activities.length === 0 ? (
+                <p className="text-xs text-muted-foreground italic opacity-70">No recent activity detected.</p>
+              ) : (
+                activities.map(activity => (
+                  <ActivityItem 
+                    key={activity.id}
+                    title={activity.title} 
+                    desc={activity.desc} 
+                    time={activity.time}
+                    icon={activity.icon}
+                    color={activity.color}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -245,9 +299,9 @@ export default function AdminDashboard() {
   );
 }
 
-function ActionButton({ title, desc }: any) {
+function ActionButton({ title, desc, onClick }: any) {
   return (
-    <button className="w-full p-4 rounded-xl bg-card border border-border/50 hover:border-primary/50 text-left transition-all group">
+    <button onClick={onClick} className="w-full p-4 rounded-xl bg-card border border-border/50 hover:border-primary/50 text-left transition-all group">
       <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">{title}</p>
       <p className="text-[10px] text-muted-foreground mt-0.5">{desc}</p>
     </button>

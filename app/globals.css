@@ -62,11 +62,7 @@ html {
   overflow-x: hidden;
 }
 
-/* Lock body scroll for admin portal — scrolling is handled inside containers */
-body:has([data-admin-layout]) {
-  overflow: hidden;
-  height: 100vh;
-}
+/* Admin portal scrolling is handled natively */
 
 /* Global scrollbar — slim orange accent */
 ::-webkit-scrollbar {
