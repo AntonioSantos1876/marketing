@@ -47,7 +47,7 @@ export default function LeadsTable() {
   const exportToCSV = () => {
     if (leads.length === 0) return;
     
-    const headers = ["Full Name", "Email", "Phone", "Business", "Industry", "Budget", "Timeline", "Status", "Date"];
+    const headers = ["Full Name", "Email", "Phone", "Business", "Industry", "Budget", "Status", "Date"];
     const rows = leads.map(l => [
       l.full_name,
       l.email,
@@ -55,7 +55,6 @@ export default function LeadsTable() {
       l.business_name || "N/A",
       l.industry || "N/A",
       l.monthly_budget || l.monthly_revenue || "N/A",
-      l.ready_to_start || "N/A",
       l.lead_status || "New",
       new Date(l.created_at).toLocaleDateString()
     ]);
@@ -166,8 +165,8 @@ export default function LeadsTable() {
                     <td className="p-4 font-medium text-foreground truncate max-w-[150px]">{lead.business_name || "N/A"}</td>
                     <td className="p-4">
                       <div className="space-y-1">
-                        <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-tighter">Budget / Timeline</p>
-                        <p className="text-foreground truncate">{lead.monthly_budget || lead.monthly_revenue} • {lead.ready_to_start}</p>
+                        <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-tighter">Budget</p>
+                        <p className="text-foreground truncate">{lead.monthly_budget || lead.monthly_revenue}</p>
                       </div>
                     </td>
                     <td className="p-4 text-muted-foreground font-medium whitespace-nowrap">

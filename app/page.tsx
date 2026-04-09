@@ -51,9 +51,10 @@ export default function LandingPage() {
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-left">
             {[
               "Targeted Ad Strategy that actually converts",
-              "Scalable Client Acquisition Systems",
-              "Advanced Customer Targeting",
-              "Premium Digital Presence Improvement"
+              "Scalable Client Acquisition Campaigns",
+              "Advanced Audience Tracking and Targeting",
+              "Premium Ad Creatives & High-Converting Copy",
+              "Automated Lead Handoff Systems"
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3">
                 <CheckCircle2 className="text-primary shrink-0 mt-1" size={20} />
@@ -61,6 +62,32 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ROI METRICS SECTION */}
+      <section className="w-full py-24 px-4 md:px-8 bg-background relative border-t border-border">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">We Measure Success in <span className="text-primary italic">Revenue.</span></h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">
+              I have helped dozens of businesses scale their operations. We ensure our partners make at least their entire investment back in hard, measurable returns rapidly. Here is a snapshot of the financial impact our systems have generated.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="glass-card p-8 border-t-4 border-t-primary rounded-xl flex flex-col items-center justify-center transform transition-all hover:-translate-y-2">
+              <h3 className="text-5xl md:text-6xl font-extrabold text-foreground mb-3 text-glow">$7.2M+</h3>
+              <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Client Revenue Generated</p>
+            </div>
+            <div className="glass-card p-8 border-t-4 border-t-primary rounded-xl flex flex-col items-center justify-center transform transition-all hover:-translate-y-2">
+              <h3 className="text-5xl md:text-6xl font-extrabold text-foreground mb-3 text-glow">350%</h3>
+              <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Average Return on Investment</p>
+            </div>
+            <div className="glass-card p-8 border-t-4 border-t-primary rounded-xl flex flex-col items-center justify-center transform transition-all hover:-translate-y-2">
+              <h3 className="text-5xl md:text-6xl font-extrabold text-foreground mb-3 text-glow">28+</h3>
+              <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Businesses Successfully Scaled</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -117,6 +144,11 @@ export default function LandingPage() {
           <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
             This application is for serious business owners ready to grow. We review each submission carefully and only reach out to qualified applicants.
           </p>
+          <div className="flex justify-center">
+            <Link href="/apply" className="btn-primary flex items-center justify-center gap-2 text-xl px-10 py-5">
+              Book Free Demo Call <ArrowRight size={24} />
+            </Link>
+          </div>
         </div>
       </section>
       

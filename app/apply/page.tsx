@@ -17,8 +17,7 @@ export default function ApplyPage() {
     email: "",
     phone: "",
     industry: "",
-    monthly_revenue: "Under $10,000",
-    ready_to_start: "Immediately",
+    monthly_revenue: "Under $5,000",
     worked_with_agency: "Not yet",
     why_good_fit: "",
     preferred_contact_method: "Email",
@@ -91,7 +90,6 @@ export default function ApplyPage() {
         phone: formData.phone,
         industry: formData.industry,
         monthly_revenue: formData.monthly_revenue,
-        ready_to_start: formData.ready_to_start,
         worked_with_agency: formData.worked_with_agency,
         why_good_fit: formData.why_good_fit,
         preferred_contact_method: formData.preferred_contact_method,
@@ -101,6 +99,17 @@ export default function ApplyPage() {
       const { error: dbError } = await supabase.from('leads').insert([sanitizedData]);
       
       if (dbError) throw dbError;
+      
+      // Attempt to send confirmation email
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, full_name: formData.full_name }),
+        });
+      } catch (emailErr) {
+        console.error("Failed to trigger email system:", emailErr);
+      }
       
       router.push("/thank-you");
     } catch (err: any) {
@@ -185,19 +194,11 @@ export default function ApplyPage() {
               <div>
                 <label className="block text-sm text-muted-foreground mb-1">Approximate monthly revenue?</label>
                 <select value={formData.monthly_revenue} onChange={(e: any) => updateForm('monthly_revenue', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
-                  <option>Under $10,000</option>
+                  <option>Under $5,000</option>
+                  <option>$5,000 - $10,000</option>
                   <option>$10,000 - $30,000</option>
                   <option>$30,000 - $100,000</option>
                   <option>$100,000+</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">How soon are you ready to start?</label>
-                <select value={formData.ready_to_start} onChange={(e: any) => updateForm('ready_to_start', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
-                  <option>Immediately</option>
-                  <option>In 1-2 weeks</option>
-                  <option>Within a month</option>
-                  <option>Just researching</option>
                 </select>
               </div>
               <div>

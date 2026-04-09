@@ -40,6 +40,8 @@ export default function AdminDashboard() {
         const revenue = data.reduce((acc, lead) => {
           if (lead.lead_status !== 'Qualified') return acc;
           const budget = lead.monthly_revenue || lead.monthly_budget || "";
+          if (budget.includes('Under $5,000')) return acc + 2500;
+          if (budget.includes('$5,000 - $10,000')) return acc + 7500;
           if (budget.includes('Under $10,000')) return acc + 5000;
           if (budget.includes('$10,000 - $30,000')) return acc + 20000;
           if (budget.includes('$30,000 - $100,000')) return acc + 65000;

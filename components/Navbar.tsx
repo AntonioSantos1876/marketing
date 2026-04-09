@@ -25,37 +25,10 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link href="/admin/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Admin Login
-          </Link>
-          <div className="h-4 w-px bg-border"></div>
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className="md:hidden flex items-center gap-2">
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        <div className="hidden md:flex items-center gap-6">
+          {/* Links hidden for public users */}
         </div>
       </div>
-
-      {/* Mobile Menu Dropdown */}
-      {isMenuOpen && (
-        <div className="md:hidden border-b border-border bg-card animate-in slide-in-from-top-4 duration-200">
-          <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            <Link 
-              href="/admin/login" 
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-            >
-              <LayoutDashboard size={20} /> Admin Login
-            </Link>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }
