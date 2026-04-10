@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="bg_grad" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#140f0c"/>
+      <stop offset="100%" stop-color="#050302"/>
+    </radialGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#8a2e00"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255, 123, 0, 0.4)"/>
+      <stop offset="100%" stop-color="rgba(255, 123, 0, 0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg_grad)"/>
+  <rect x="100" y="950.0" width="25" height="50.0" fill="url(#glow)" opacity="0.2"/>
+<circle cx="112.5" cy="930.0" r="8" fill="#ffcc80"/>
+<circle cx="112.5" cy="930.0" r="30" fill="url(#aura)"/>
+<rect x="140" y="949.0" width="25" height="51.0" fill="url(#glow)" opacity="0.22000000000000003"/>
+<rect x="180" y="946.5177977468155" width="25" height="53.4822022531845" fill="url(#glow)" opacity="0.24000000000000002"/>
+<circle cx="192.5" cy="926.5177977468155" r="8" fill="#ffcc80"/>
+<circle cx="192.5" cy="926.5177977468155" r="30" fill="url(#aura)"/>
+<rect x="220" y="942.7753259441579" width="25" height="57.22467405584207" fill="url(#glow)" opacity="0.26"/>
+<circle cx="232.5" cy="922.7753259441579" r="8" fill="#ffcc80"/>
+<circle cx="232.5" cy="922.7753259441579" r="30" fill="url(#aura)"/>
+<rect x="260" y="937.8742674679169" width="25" height="62.125732532083184" fill="url(#glow)" opacity="0.28"/>
+<circle cx="272.5" cy="917.8742674679169" r="8" fill="#ffcc80"/>
+<circle cx="272.5" cy="917.8742674679169" r="30" fill="url(#aura)"/>
+<rect x="300" y="931.8805084080576" width="25" height="68.11949159194239" fill="url(#glow)" opacity="0.30000000000000004"/>
+<rect x="340" y="924.8422237242231" width="25" height="75.15777627577685" fill="url(#glow)" opacity="0.32"/>
+<circle cx="352.5" cy="904.8422237242231" r="8" fill="#ffcc80"/>
+<circle cx="352.5" cy="904.8422237242231" r="30" fill="url(#aura)"/>
+<rect x="380" y="916.7970652433764" width="25" height="83.20293475662356" fill="url(#glow)" opacity="0.33999999999999997"/>
+<rect x="420" y="907.7757468552674" width="25" height="92.22425314473261" fill="url(#glow)" opacity="0.36000000000000004"/>
+<rect x="460" y="897.8040847868424" width="25" height="102.1959152131576" fill="url(#glow)" opacity="0.38"/>
+<rect x="500" y="886.9042655519806" width="25" height="113.09573444801933" fill="url(#glow)" opacity="0.4"/>
+<rect x="540" y="875.0956855972547" width="25" height="124.90431440274533" fill="url(#glow)" opacity="0.42000000000000004"/>
+<rect x="580" y="862.3955347673784" width="25" height="137.60446523262164" fill="url(#glow)" opacity="0.44"/>
+<rect x="620" y="848.8192174134869" width="25" height="151.18078258651315" fill="url(#glow)" opacity="0.46"/>
+<rect x="660" y="834.3806657781475" width="25" height="165.61933422185243" fill="url(#glow)" opacity="0.48"/>
+<rect x="700" y="819.0925791906452" width="25" height="180.90742080935482" fill="url(#glow)" opacity="0.5"/>
+<rect x="740" y="802.9666105603795" width="25" height="197.0333894396205" fill="url(#glow)" opacity="0.52"/>
+<circle cx="752.5" cy="782.9666105603795" r="8" fill="#ffcc80"/>
+<circle cx="752.5" cy="782.9666105603795" r="30" fill="url(#aura)"/>
+<rect x="780" y="786.0135144409134" width="25" height="213.98648555908667" fill="url(#glow)" opacity="0.54"/>
+<circle cx="792.5" cy="766.0135144409134" r="8" fill="#ffcc80"/>
+<circle cx="792.5" cy="766.0135144409134" r="30" fill="url(#aura)"/>
+<rect x="820" y="768.2432664377156" width="25" height="231.75673356228435" fill="url(#glow)" opacity="0.56"/>
+<rect x="860" y="749.6651608289641" width="25" height="250.33483917103592" fill="url(#glow)" opacity="0.5800000000000001"/>
+<rect x="900" y="730.2878913387765" width="25" height="269.71210866122357" fill="url(#glow)" opacity="0.6000000000000001"/>
+<rect x="940" y="710.1196186860045" width="25" height="289.8803813139955" fill="url(#glow)" opacity="0.6200000000000001"/>
+<circle cx="952.5" cy="690.1196186860045" r="8" fill="#ffcc80"/>
+<circle cx="952.5" cy="690.1196186860045" r="30" fill="url(#aura)"/>
+<rect x="980" y="689.1680276135203" width="25" height="310.8319723864797" fill="url(#glow)" opacity="0.6400000000000001"/>
+<rect x="1020" y="667.4403754494081" width="25" height="332.5596245505919" fill="url(#glow)" opacity="0.6599999999999999"/>
+<circle cx="1032.5" cy="647.4403754494081" r="8" fill="#ffcc80"/>
+<circle cx="1032.5" cy="647.4403754494081" r="30" fill="url(#aura)"/>
+<rect x="1060" y="644.9435337779421" width="25" height="355.05646622205796" fill="url(#glow)" opacity="0.6799999999999999"/>
+<rect x="1100" y="621.684024449529" width="25" height="378.31597555047097" fill="url(#glow)" opacity="0.7"/>
+<circle cx="1112.5" cy="601.684024449529" r="8" fill="#ffcc80"/>
+<circle cx="1112.5" cy="601.684024449529" r="30" fill="url(#aura)"/>
+<rect x="1140" y="597.6680508982733" width="25" height="402.3319491017267" fill="url(#glow)" opacity="0.72"/>
+<rect x="1180" y="572.9015255385675" width="25" height="427.09847446143243" fill="url(#glow)" opacity="0.74"/>
+<circle cx="1192.5" cy="552.9015255385675" r="8" fill="#ffcc80"/>
+<circle cx="1192.5" cy="552.9015255385675" r="30" fill="url(#aura)"/>
+<rect x="1220" y="547.390093860974" width="25" height="452.6099061390259" fill="url(#glow)" opacity="0.76"/>
+<rect x="1260" y="521.1391557305478" width="25" height="478.8608442694522" fill="url(#glow)" opacity="0.78"/>
+<rect x="1300" y="494.15388429909353" width="25" height="505.84611570090647" fill="url(#glow)" opacity="0.8"/>
+<rect x="1340" y="466.4392428704281" width="25" height="533.5607571295719" fill="url(#glow)" opacity="0.8200000000000001"/>
+<circle cx="1352.5" cy="446.4392428704281" r="8" fill="#ffcc80"/>
+<circle cx="1352.5" cy="446.4392428704281" r="30" fill="url(#aura)"/>
+<rect x="1380" y="437.9999999999999" width="25" height="562.0000000000001" fill="url(#glow)" opacity="0.8400000000000001"/>
+<circle cx="1392.5" cy="417.9999999999999" r="8" fill="#ffcc80"/>
+<circle cx="1392.5" cy="417.9999999999999" r="30" fill="url(#aura)"/>
+<rect x="1420" y="408.84074306384787" width="25" height="591.1592569361521" fill="url(#glow)" opacity="0.8600000000000001"/>
+<rect x="1460" y="378.96589049434147" width="25" height="621.0341095056585" fill="url(#glow)" opacity="0.8800000000000001"/>
+<rect x="1500" y="348.37970284954747" width="25" height="651.6202971504525" fill="url(#glow)" opacity="0.9000000000000001"/>
+<rect x="1540" y="317.0862928579593" width="25" height="682.9137071420407" fill="url(#glow)" opacity="0.9200000000000002"/>
+<rect x="1580" y="285.0896345595954" width="25" height="714.9103654404046" fill="url(#glow)" opacity="0.9400000000000002"/>
+<circle cx="1592.5" cy="265.0896345595954" r="8" fill="#ffcc80"/>
+<circle cx="1592.5" cy="265.0896345595954" r="30" fill="url(#aura)"/>
+<rect x="1620" y="252.39357164726493" width="25" height="747.6064283527351" fill="url(#glow)" opacity="0.96"/>
+<circle cx="1632.5" cy="232.39357164726493" r="8" fill="#ffcc80"/>
+<circle cx="1632.5" cy="232.39357164726493" r="30" fill="url(#aura)"/>
+<rect x="1660" y="219.0018250974208" width="25" height="780.9981749025792" fill="url(#glow)" opacity="0.98"/>
+<circle cx="1672.5" cy="199.0018250974208" r="8" fill="#ffcc80"/>
+<circle cx="1672.5" cy="199.0018250974208" r="30" fill="url(#aura)"/>
+
+</svg>

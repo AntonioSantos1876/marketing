@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
@@ -33,12 +32,10 @@ export default function ApplyPage() {
   };
 
   const validatePhone = (phone: string) => {
-    // Basic numeric check: digits, and optional leading +
     return /^\+?[0-9]{7,15}$/.test(phone.replace(/[\s-()]/g, ''));
   };
 
   const nextStep = () => {
-    // Basic validation before moving to next step
     if (step === 1) {
       if (!formData.full_name || !formData.email) {
         setError("Please fill out all required fields to continue.");
@@ -59,6 +56,7 @@ export default function ApplyPage() {
     setError(null);
     setStep((prev: number) => prev + 1);
   };
+  
   const prevStep = () => setStep((prev: number) => prev - 1);
 
   const submitForm = async (e: any) => {
@@ -71,7 +69,6 @@ export default function ApplyPage() {
     setIsSubmitting(true);
     setError(null);
 
-    // If Supabase keys are not set, just simulate success for testing
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
       setTimeout(() => {
         router.push("/thank-you");
@@ -80,10 +77,6 @@ export default function ApplyPage() {
     }
 
     try {
-      // Filter out fields that are NOT in the database table 'leads'
-      // 'worked_with_agency' is currently not in the schema.sql columns
-      const { ...submissionData } = formData;
-      // For now, let's omit 'worked_with_agency' from the database insert (it will stay in local state)
       const sanitizedData = {
         full_name: formData.full_name,
         email: formData.email,
@@ -100,7 +93,6 @@ export default function ApplyPage() {
       
       if (dbError) throw dbError;
       
-      // Attempt to send confirmation email
       try {
         await fetch('/api/send-email', {
           method: 'POST',
@@ -119,141 +111,156 @@ export default function ApplyPage() {
     }
   };
 
+  const inputStyle = "w-full bg-black border border-white/20 p-4 text-white font-medium focus:border-orange-500 outline-none transition-colors";
+  const labelStyle = "block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2";
+
   return (
-    <main className="min-h-screen py-20 px-4 md:px-8 bg-background flex flex-col items-center justify-center">
-      <div className="max-w-2xl w-full glass-card relative overflow-hidden">
+    <main className="min-h-screen py-32 px-4 md:px-8 bg-black flex flex-col items-center justify-center relative overflow-hidden text-white selection:bg-orange-500 selection:text-white">
+      
+      {/* Background Image Strict Grayscale Layer */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-black/85 z-10" />
+        <img 
+          src="https://images.unsplash.com/photo-1554774853-719586f82d77?q=80&w=1920&auto=format&fit=crop" 
+          alt="Application Background" 
+          className="w-full h-full object-cover filter grayscale contrast-125 opacity-70"
+        />
+      </div>
+
+      <div className="max-w-2xl w-full bg-zinc-900 border border-white/10 relative overflow-hidden z-10 shadow-2xl">
         {/* Progress Bar */}
-        <div className="absolute top-0 left-0 h-1 bg-border w-full">
+        <div className="absolute top-0 left-0 h-1.5 bg-black w-full">
           <div 
-            className="h-full bg-primary transition-all duration-300" 
+            className="h-full bg-orange-500 transition-all duration-500" 
             style={{ width: `${(step / 4) * 100}%` }}
           />
         </div>
 
-        <div className="mb-8 mt-2">
-          <h1 className="text-3xl font-bold mb-2">Application for Partnership</h1>
-          <p className="text-muted-foreground text-sm">
-            Please fill out this form truthfully. We use this to evaluate if your business is a strategic fit for our services.
-          </p>
-          {error && (
-            <div className="mt-4 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-400 text-sm">
-              {error}
-            </div>
-          )}
-        </div>
-
-        <form onSubmit={step === 4 ? submitForm : (e: any) => { e.preventDefault(); nextStep(); }} className="space-y-6">
+        <div className="p-8 md:p-12">
           
-          {/* STEP 1: Basic Info */}
-          {step === 1 && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-              <h2 className="text-xl font-semibold mb-4 border-b border-border pb-2">1. Contact Details</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1">Full Name *</label>
-                  <input required type="text" value={formData.full_name} onChange={(e: any) => updateForm('full_name', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
-                </div>
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1">Email Address *</label>
-                  <input required type="email" value={formData.email} onChange={(e: any) => updateForm('email', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm text-muted-foreground mb-1">Phone Number *</label>
-                  <input required type="tel" value={formData.phone} onChange={(e: any) => updateForm('phone', e.target.value)} placeholder="e.g. 1234567890" className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
-                </div>
-                <div className="md:col-span-2 flex items-start gap-3 pt-2">
-                  <input 
-                    type="checkbox" 
-                    id="consent"
-                    checked={formData.consent_to_contact} 
-                    onChange={(e: any) => updateForm('consent_to_contact', e.target.checked)} 
-                    className="mt-1 w-4 h-4 rounded border-border bg-background text-primary focus:ring-primary"
-                  />
-                  <label htmlFor="consent" className="text-sm text-muted-foreground leading-tight">
-                    I consent to be contacted via email or phone regarding my application and future marketing services.
-                  </label>
-                </div>
+          <div className="mb-10 text-center">
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Application for <span className="text-orange-500">Scale.</span></h1>
+            <p className="text-gray-400 font-medium leading-relaxed">
+              Please fill out this form truthfully. We use this to evaluate if your business is a strategic fit for our highly exclusive infrastructure.
+            </p>
+            {error && (
+              <div className="mt-6 p-4 bg-red-900/40 border border-red-500/50 text-red-400 text-sm font-bold">
+                {error}
               </div>
-            </div>
-          )}
-
-          {/* STEP 2: Business Info */}
-          {step === 2 && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-              <h2 className="text-xl font-semibold mb-4 border-b border-border pb-2">2. Your Business</h2>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Industry</label>
-                <input type="text" value={formData.industry} onChange={(e: any) => updateForm('industry', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none" />
-              </div>
-            </div>
-          )}
-          {/* STEP 3: Revenue Info */}
-          {step === 3 && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
-              <h2 className="text-xl font-semibold mb-4 border-b border-border pb-2">3. Revenue per month</h2>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Approximate monthly revenue?</label>
-                <select value={formData.monthly_revenue} onChange={(e: any) => updateForm('monthly_revenue', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
-                  <option>Under $5,000</option>
-                  <option>$5,000 - $10,000</option>
-                  <option>$10,000 - $30,000</option>
-                  <option>$30,000 - $100,000</option>
-                  <option>$100,000+</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm text-muted-foreground mb-1">Have you worked with a marketing agency before?</label>
-                <select value={formData.worked_with_agency} onChange={(e: any) => updateForm('worked_with_agency', e.target.value)} className="w-full bg-background border border-border rounded p-3 text-foreground focus:border-primary outline-none">
-                  <option>Not yet</option>
-                  <option>Yes, in the past</option>
-                  <option>Yes, currently working with one</option>
-                </select>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4: Success & Calendly */}
-          {step === 4 && (
-            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 py-8 text-center px-4">
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary">
-                  <CheckCircle2 size={40} />
-                </div>
-                <h2 className="text-3xl font-bold mb-4">Application Submitted!</h2>
-                <p className="text-muted-foreground text-lg mb-8 max-w-md mx-auto">
-                  We've received your details. To expedite the process, please book your free growth consultation call below.
-                </p>
-                
-                <a 
-                  href="https://calendly.com/macrawford1876/30min" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="btn-primary w-full max-w-sm flex items-center justify-center gap-3 text-xl py-5"
-                >
-                  Book Your Free Demo <ArrowRight size={24} />
-                </a>
-                
-                <p className="mt-6 text-sm text-muted-foreground italic">
-                  * Note: You will be redirected to our scheduling page.
-                </p>
-              </div>
-            </div>
-          )}
-
-          <div className="flex justify-between mt-8 pt-4 border-t border-border/50">
-            {step > 1 ? (
-              <button type="button" onClick={prevStep} className="text-muted-foreground hover:text-foreground flex items-center gap-2 px-4 py-2">
-                <ArrowLeft size={18} /> Back
-              </button>
-            ) : <span />}
-            
-            {step < 4 ? (
-              <button type="button" onClick={nextStep} className="btn-primary flex items-center gap-2 py-2 px-6">
-                {step === 3 ? "Submit & Continue" : "Next Step"} <ArrowRight size={18} />
-              </button>
-            ) : null}
+            )}
           </div>
-        </form>
+
+          <form onSubmit={step === 4 ? submitForm : (e: any) => { e.preventDefault(); nextStep(); }} className="space-y-8">
+            
+            {/* STEP 1: Basic Info */}
+            {step === 1 && (
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-black uppercase tracking-widest mb-6 border-b border-white/10 pb-4 text-orange-500">1. Required Details</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className={labelStyle}>Full Name *</label>
+                    <input required type="text" value={formData.full_name} onChange={(e: any) => updateForm('full_name', e.target.value)} className={inputStyle} />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Email Address *</label>
+                    <input required type="email" value={formData.email} onChange={(e: any) => updateForm('email', e.target.value)} className={inputStyle} />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className={labelStyle}>Phone Number *</label>
+                    <input required type="tel" value={formData.phone} onChange={(e: any) => updateForm('phone', e.target.value)} placeholder="e.g. +1 (555) 000-0000" className={inputStyle} />
+                  </div>
+                  <div className="md:col-span-2 flex items-start gap-4 pt-4 border-t border-white/10">
+                    <input 
+                      type="checkbox" 
+                      id="consent"
+                      checked={formData.consent_to_contact} 
+                      onChange={(e: any) => updateForm('consent_to_contact', e.target.checked)} 
+                      className="mt-1 w-5 h-5 accent-orange-500 bg-black border border-white/20"
+                    />
+                    <label htmlFor="consent" className="text-sm font-medium text-gray-400 leading-tight">
+                      I consent to be contacted via email or phone regarding my application and future strategic services.
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: Business Info */}
+            {step === 2 && (
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-black uppercase tracking-widest mb-6 border-b border-white/10 pb-4 text-orange-500">2. Organization</h2>
+                <div>
+                  <label className={labelStyle}>Industry / Niche *</label>
+                  <input required type="text" value={formData.industry} onChange={(e: any) => updateForm('industry', e.target.value)} placeholder="e.g. Real Estate, E-Commerce..." className={inputStyle} />
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: Revenue Info */}
+            {step === 3 && (
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-black uppercase tracking-widest mb-6 border-b border-white/10 pb-4 text-orange-500">3. Scale Potential</h2>
+                <div>
+                  <label className={labelStyle}>Approximate monthly revenue?</label>
+                  <select value={formData.monthly_revenue} onChange={(e: any) => updateForm('monthly_revenue', e.target.value)} className={inputStyle}>
+                    <option>Under $5,000</option>
+                    <option>$5,000 - $10,000</option>
+                    <option>$10,000 - $30,000</option>
+                    <option>$30,000 - $100,000</option>
+                    <option>$100,000+</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelStyle}>Have you worked with a marketing agency before?</label>
+                  <select value={formData.worked_with_agency} onChange={(e: any) => updateForm('worked_with_agency', e.target.value)} className={inputStyle}>
+                    <option>Not yet</option>
+                    <option>Yes, in the past</option>
+                    <option>Yes, currently working with one</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 4: Success & Calendly */}
+            {step === 4 && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 py-8 text-center px-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-24 h-24 bg-orange-500/10 rounded-full flex items-center justify-center mb-8 border border-orange-500/30">
+                    <CheckCircle2 size={48} className="text-orange-500" />
+                  </div>
+                  <h2 className="text-4xl font-black uppercase tracking-tight mb-4">Data Received.</h2>
+                  <p className="text-gray-400 font-medium text-lg mb-10 max-w-sm mx-auto">
+                    To immediately accelerate this process, secure your onboarding call block below.
+                  </p>
+                  
+                  <a 
+                    href="https://calendly.com/macrawford1876/30min" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-3 bg-orange-500 hover:bg-orange-600 text-black font-black uppercase tracking-widest text-xl py-6 transition-colors shadow-[0_0_30px_rgba(255,102,0,0.3)]"
+                  >
+                    Lock Call Time <ArrowRight size={24} />
+                  </a>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-between mt-12 pt-6 border-t border-white/10">
+              {step > 1 ? (
+                <button type="button" onClick={prevStep} className="text-gray-400 hover:text-white font-bold uppercase tracking-widest text-sm flex items-center gap-3 py-3 transition-colors">
+                  <ArrowLeft size={18} /> Revert
+                </button>
+              ) : <span />}
+              
+              {step < 4 ? (
+                <button type="button" onClick={nextStep} className="flex items-center gap-3 bg-white hover:bg-gray-200 text-black font-black uppercase tracking-widest text-sm py-4 px-8 transition-colors">
+                  {step === 3 ? "Submit Data" : "Continue"} <ArrowRight size={18} />
+                </button>
+              ) : null}
+            </div>
+          </form>
+
+        </div>
       </div>
     </main>
   );

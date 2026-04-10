@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Eye, Search, Download, Filter, ChevronDown, CheckCircle2 } from "lucide-react";
+import { Eye, Search, Download, Filter, ChevronDown, CheckCircle2, Mail, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function LeadsTable() {
@@ -11,6 +11,7 @@ export default function LeadsTable() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLeads();
@@ -44,15 +45,42 @@ export default function LeadsTable() {
     setUpdatingId(null);
   };
 
+  const sendPricingEmail = async (id: string, email: string, full_name: string) => {
+    if (!email) return;
+    setSendingEmailId(id);
+    
+    try {
+      const res = await fetch('/api/send-pricing-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, full_name })
+      });
+      
+      const responseData = await res.json();
+      
+      if (res.ok) {
+         // Auto upgrade their pipeline status
+         await updateLeadStatus(id, 'Contacted');
+         alert(`Success! Strategic Pricing Email was dispatched to ${full_name}.`);
+      } else {
+         alert(`Failed to send email. Resend system message: ${responseData.error?.message || responseData.error || 'Check API keys.'}`);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Network failure connecting to email system.');
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
+
   const exportToCSV = () => {
     if (leads.length === 0) return;
     
-    const headers = ["Full Name", "Email", "Phone", "Business", "Industry", "Budget", "Status", "Date"];
+    const headers = ["Full Name", "Email", "Phone", "Industry", "Budget", "Status", "Date"];
     const rows = leads.map(l => [
       l.full_name,
       l.email,
       l.phone || "N/A",
-      l.business_name || "N/A",
       l.industry || "N/A",
       l.monthly_budget || l.monthly_revenue || "N/A",
       l.lead_status || "New",
@@ -73,7 +101,7 @@ export default function LeadsTable() {
 
   const filteredLeads = leads.filter(l => {
     const matchesSearch = l.full_name.toLowerCase().includes(search.toLowerCase()) || 
-                         (l.business_name && l.business_name.toLowerCase().includes(search.toLowerCase()));
+                         (l.industry && l.industry.toLowerCase().includes(search.toLowerCase()));
     const matchesStatus = statusFilter === "All" || (l.lead_status || "New") === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -102,7 +130,7 @@ export default function LeadsTable() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <input 
             type="text" 
-            placeholder="Search by name or business..." 
+            placeholder="Search by name or industry..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-background border border-border rounded-lg py-2.5 pl-10 pr-4 text-sm text-foreground focus:border-primary outline-none transition-all"
@@ -136,7 +164,7 @@ export default function LeadsTable() {
             <thead className="bg-muted/50 border-b border-border text-[11px] uppercase tracking-wider font-bold text-muted-foreground">
               <tr>
                 <th className="p-4">Applicant</th>
-                <th className="p-4">Business</th>
+                <th className="p-4">Industry</th>
                 <th className="p-4">Engagement</th>
                 <th className="p-4">Date</th>
                 <th className="p-4">Status</th>
@@ -162,7 +190,7 @@ export default function LeadsTable() {
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 font-medium text-foreground truncate max-w-[150px]">{lead.business_name || "N/A"}</td>
+                    <td className="p-4 font-medium text-foreground truncate max-w-[150px]">{lead.industry || "N/A"}</td>
                     <td className="p-4">
                       <div className="space-y-1">
                         <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-tighter">Budget</p>
@@ -193,12 +221,25 @@ export default function LeadsTable() {
                       </div>
                     </td>
                     <td className="p-4 text-right">
-                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                      <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2">
+                        <button 
+                          onClick={() => sendPricingEmail(lead.id, lead.email, lead.full_name)}
+                          disabled={sendingEmailId === lead.id}
+                          className={`flex items-center gap-1.5 font-bold text-xs py-1.5 px-3 rounded whitespace-nowrap transition-all shadow-sm ${
+                            sendingEmailId === lead.id 
+                            ? 'bg-orange-500/20 text-orange-500 cursor-not-allowed border border-orange-500/30' 
+                            : 'bg-orange-500 hover:bg-orange-600 text-black border border-transparent shadow-[0_0_15px_rgba(255,102,0,0.2)]'
+                          }`}
+                          title="Send Automated Pricing Link"
+                        >
+                          {sendingEmailId === lead.id ? <Loader2 size={14} className="animate-spin" /> : <Mail size={14} />}
+                          Send Pricing
+                        </button>
                         <Link 
                           href={`/admin/leads/${lead.id}`} 
-                          className="flex items-center gap-1 hover:text-primary transition-colors font-bold text-xs bg-muted py-1.5 px-3 rounded whitespace-nowrap"
+                          className="flex items-center gap-1 hover:text-foreground transition-colors font-bold text-xs bg-muted text-muted-foreground py-1.5 px-3 rounded border border-border/50 whitespace-nowrap"
                         >
-                          <Eye size={14} /> Full Profile
+                          <Eye size={14} /> Profile
                         </Link>
                       </div>
                     </td>
