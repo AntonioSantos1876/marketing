@@ -2,35 +2,68 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, Users, DollarSign, ChevronLeft, ChevronRight } from "lucide-react";
+import { TrendingUp, Users, DollarSign, ChevronLeft, ChevronRight, Target, Activity, ShieldCheck } from "lucide-react";
 
 const testimonials = [
   {
     id: 1,
-    icon: <TrendingUp className="text-primary" size={24} />,
+    icon: <TrendingUp className="text-orange-500" size={24} />,
     value: "240",
     label: "Increased inquiries in 30 days",
-    quote: "They completely transformed how we capture leads. The quality of prospects is night and day.",
+    quote: "They completely re-engineered our acquisition pipeline. The sheer volume and quality of prospects jumping into our funnel right now is unprecedented.",
     author: "Sarah J.",
-    role: "Premium Consultant"
+    role: "Senior Partner, Global Consulting",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
   },
   {
     id: 2,
-    icon: <Users className="text-primary" size={24} />,
-    value: "30+",
-    label: "Qualified leads per week",
-    quote: "We had to pause our ads because we got too many highly qualified calls. Best problem to have.",
+    icon: <Users className="text-orange-500" size={24} />,
+    value: "45+",
+    label: "Qualified strategy calls per week",
+    quote: "We had to pause our advertising engines because my sales team could not handle the calendar volume. The targeting is flawless.",
     author: "Michael R.",
-    role: "B2B SaaS Founder"
+    role: "B2B SaaS Founder & CEO",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
   },
   {
     id: 3,
-    icon: <DollarSign className="text-primary" size={24} />,
-    value: "$120k",
-    label: "Added revenue in Q1",
-    quote: "The strategy was incredibly sharp. They filtered out the noise and brought us only serious buyers.",
+    icon: <DollarSign className="text-orange-500" size={24} />,
+    value: "$420k",
+    label: "Added pipeline revenue in Q1",
+    quote: "Their omnipresent infrastructure is incredibly aggressive. They filtered out the tire-kickers and brought us only highly-capitalized buyers ready to execute.",
     author: "David L.",
-    role: "Service Business Owner"
+    role: "Enterprise Logistics Director",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop"
+  },
+  {
+    id: 4,
+    icon: <Target className="text-orange-500" size={24} />,
+    value: "18",
+    label: "High-ticket enterprise clients closed",
+    quote: "We stopped competing on price instantly. The brand positioning they engineered allowed us to immediately close contracts that were previously completely out of reach.",
+    author: "Elena M.",
+    role: "Managing Director, Tech Solutions",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop"
+  },
+  {
+    id: 5,
+    icon: <Activity className="text-orange-500" size={24} />,
+    value: "3.8x",
+    label: "Return on Ad Spend Strategy",
+    quote: "It felt like turning on a light switch. Within 14 days, the volume of active, qualified discovery calls completely outpaced anything we had built internally over the last two years.",
+    author: "James T.",
+    role: "Co-Founder, Real Estate Group",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+  },
+  {
+    id: 6,
+    icon: <ShieldCheck className="text-orange-500" size={24} />,
+    value: "0",
+    label: "Days spent cold-calling",
+    quote: "I haven't picked up the phone to cold prospect once since the systems launched. The entire funnel is inbound, completely automated, and populated with targeted traffic.",
+    author: "Rachel K.",
+    role: "Principal Wealth Manager",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop"
   }
 ];
 
@@ -71,8 +104,8 @@ export function TestimonialsCarousel() {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto overflow-hidden px-4 py-8">
-      <div className="relative h-[400px] md:h-[350px] flex items-center justify-center">
+    <div className="relative w-full max-w-4xl mx-auto overflow-x-hidden px-4 md:px-12 py-8">
+      <div className="relative min-h-[460px] sm:min-h-[380px] md:min-h-[260px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -97,25 +130,29 @@ export function TestimonialsCarousel() {
             }}
             className="absolute w-full"
           >
-            <div className="glass-card mx-auto max-w-2xl bg-card border border-border rounded-2xl p-8 md:p-12 shadow-xl">
-              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto md:mx-0">
+            <div className="glass-card mx-auto max-w-2xl bg-zinc-950 border border-white/5 rounded-xl p-5 md:p-8 shadow-2xl">
+              <div className="flex flex-col md:flex-row gap-5 items-center md:items-start text-center md:text-left">
+                <div className="flex-shrink-0 flex md:flex-col items-center gap-4 md:gap-0 md:min-w-[140px]">
+                  <div className="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center md:mb-3">
                     {testimonials[currentIndex].icon}
                   </div>
-                  <h4 className="text-5xl font-bold text-foreground mb-1">{testimonials[currentIndex].value}</h4>
-                  <p className="text-primary font-medium text-sm tracking-wide uppercase">{testimonials[currentIndex].label}</p>
+                  <div className="text-left md:text-inherit">
+                    <h4 className="text-3xl md:text-4xl font-black text-white mb-0.5">{testimonials[currentIndex].value}</h4>
+                    <p className="text-orange-500 font-bold text-[9px] tracking-widest uppercase">{testimonials[currentIndex].label}</p>
+                  </div>
                 </div>
                 
-                <div className="flex-1">
-                  <p className="text-xl md:text-2xl text-foreground italic mb-8 leading-relaxed font-medium">
+                <div className="flex-1 flex flex-col gap-4">
+                  <p className="text-base md:text-lg text-gray-300 italic leading-relaxed font-medium">
                     "{testimonials[currentIndex].quote}"
                   </p>
-                  <div className="flex items-center gap-4 justify-center md:justify-start">
-                    <div className="w-12 h-12 bg-muted rounded-full overflow-hidden border border-border">
-                      <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary font-bold">
-                        {testimonials[currentIndex].author[0]}
-                      </div>
+                  <div className="flex items-center gap-3 justify-center md:justify-start">
+                    <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/10 relative shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                      <img 
+                        src={testimonials[currentIndex].image} 
+                        alt={testimonials[currentIndex].author} 
+                        className="w-full h-full object-cover filter grayscale contrast-125"
+                      />
                     </div>
                     <div>
                       <p className="font-bold text-foreground">{testimonials[currentIndex].author}</p>

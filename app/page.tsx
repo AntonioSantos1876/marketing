@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Activity, DollarSign, Globe, Target } from "lucide-react";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
+import { CalendarProof } from "@/components/CalendarProof";
 import { motion } from "framer-motion";
 
 const images = {
@@ -17,7 +18,7 @@ const images = {
 
 export default function LandingPage() {
   return (
-    <main className="flex-1 w-full flex flex-col items-center bg-black text-white font-sans selection:bg-orange-500 selection:text-white">
+    <main className="flex-1 w-full flex flex-col items-center bg-black text-white font-sans selection:bg-orange-500 selection:text-white overflow-x-hidden">
       
       {/* 1. ARCHITECTURAL HERO SECTION */}
       <section className="relative w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-12 py-20 overflow-hidden">
@@ -240,13 +241,18 @@ export default function LandingPage() {
         </div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-24">
+          <div className="text-center mb-20">
             <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tight">Social <span className="text-orange-500">Proof.</span></h2>
             <p className="text-xl text-gray-400 mt-4 font-medium uppercase tracking-widest">Do not just take our word for it.</p>
           </div>
           
-          <div className="backdrop-blur-sm">
+          <div className="backdrop-blur-sm mb-24">
             <TestimonialsCarousel />
+          </div>
+
+          {/* NEW CALENDAR PROOF LAYER */}
+          <div className="border-t border-white/10 pt-20">
+             <CalendarProof />
           </div>
         </div>
       </section>
