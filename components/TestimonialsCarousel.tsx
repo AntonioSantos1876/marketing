@@ -105,7 +105,7 @@ export function TestimonialsCarousel() {
 
   return (
     <div className="relative w-full max-w-4xl mx-auto overflow-x-hidden px-4 md:px-12 py-8">
-      <div className="relative min-h-[460px] sm:min-h-[380px] md:min-h-[260px] flex items-center justify-center">
+      <div className="relative min-h-[420px] sm:min-h-[380px] md:min-h-[260px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -130,33 +130,33 @@ export function TestimonialsCarousel() {
             }}
             className="absolute w-full"
           >
-            <div className="glass-card mx-auto max-w-2xl bg-zinc-950 border border-white/5 rounded-xl p-5 md:p-8 shadow-2xl">
-              <div className="flex flex-col md:flex-row gap-5 items-center md:items-start text-center md:text-left">
+            <div className="glass-card mx-auto max-w-2xl bg-zinc-950 border border-white/5 rounded-xl p-6 md:p-8 shadow-2xl">
+              <div className="flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
                 <div className="flex-shrink-0 flex md:flex-col items-center gap-4 md:gap-0 md:min-w-[140px]">
                   <div className="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center md:mb-3">
                     {testimonials[currentIndex].icon}
                   </div>
                   <div className="text-left md:text-inherit">
-                    <h4 className="text-3xl md:text-4xl font-black text-white mb-0.5">{testimonials[currentIndex].value}</h4>
-                    <p className="text-orange-500 font-bold text-[9px] tracking-widest uppercase">{testimonials[currentIndex].label}</p>
+                    <h4 className="text-2xl md:text-4xl font-black text-white mb-0.5">{testimonials[currentIndex].value}</h4>
+                    <p className="text-orange-500 font-bold text-[8px] md:text-[9px] tracking-widest uppercase">{testimonials[currentIndex].label}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex-1 flex flex-col gap-4">
                   <p className="text-base md:text-lg text-gray-300 italic leading-relaxed font-medium">
                     "{testimonials[currentIndex].quote}"
                   </p>
                   <div className="flex items-center gap-3 justify-center md:justify-start">
-                    <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/10 relative shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                      <img 
-                        src={testimonials[currentIndex].image} 
-                        alt={testimonials[currentIndex].author} 
+                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white/10 relative shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                      <img
+                        src={testimonials[currentIndex].image}
+                        alt={testimonials[currentIndex].author}
                         className="w-full h-full object-cover filter grayscale contrast-125"
                       />
                     </div>
-                    <div>
-                      <p className="font-bold text-foreground">{testimonials[currentIndex].author}</p>
-                      <p className="text-sm text-muted-foreground">{testimonials[currentIndex].role}</p>
+                    <div className="text-left">
+                      <p className="font-bold text-foreground text-sm md:text-base">{testimonials[currentIndex].author}</p>
+                      <p className="text-[10px] md:text-sm text-muted-foreground">{testimonials[currentIndex].role}</p>
                     </div>
                   </div>
                 </div>
@@ -175,24 +175,23 @@ export function TestimonialsCarousel() {
               setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex 
-                ? "bg-primary w-8" 
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
+                ? "bg-primary w-8"
                 : "bg-border hover:bg-primary/50"
-            }`}
+              }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
       {/* Arrows */}
-      <button 
+      <button
         onClick={prevSlide}
         className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-background/50 border border-border text-foreground hover:bg-primary hover:text-white transition-all z-20 hidden md:block"
       >
         <ChevronLeft size={24} />
       </button>
-      <button 
+      <button
         onClick={nextSlide}
         className="absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-background/50 border border-border text-foreground hover:bg-primary hover:text-white transition-all z-20 hidden md:block"
       >
