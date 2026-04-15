@@ -248,7 +248,7 @@ export default function ApplyPage() {
             <div className="flex justify-between mt-12 pt-6 border-t border-white/10">
               {step > 1 ? (
                 <button type="button" onClick={prevStep} className="text-gray-400 hover:text-white font-bold uppercase tracking-widest text-sm flex items-center gap-3 py-3 transition-colors">
-                  <ArrowLeft size={18} /> Revert
+                  <ArrowLeft size={18} /> Back
                 </button>
               ) : <span />}
               

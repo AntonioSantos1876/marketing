@@ -28,8 +28,6 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/" className="text-sm font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">Home</Link>
-          <Link href="/pricing" className="text-sm font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">Pricing</Link>
           <Link href="/apply" className="bg-orange-500 hover:bg-orange-600 text-black px-6 py-2.5 rounded-sm font-black uppercase tracking-widest text-xs transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
             Book Call
           </Link>
@@ -49,8 +47,6 @@ export function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 top-16 bg-black z-40 flex flex-col p-6 animate-in slide-in-from-top duration-300">
           <nav className="flex flex-col gap-6 mt-8">
-            <Link href="/" className="text-2xl font-black uppercase tracking-tighter text-white border-b border-white/10 pb-4">Home</Link>
-            <Link href="/pricing" className="text-2xl font-black uppercase tracking-tighter text-white border-b border-white/10 pb-4">Pricing</Link>
             <Link href="/apply" className="bg-orange-500 text-black p-5 text-center font-black uppercase tracking-widest text-lg mt-4 shadow-xl">
               Book Your Call Now
             </Link>

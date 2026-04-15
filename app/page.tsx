@@ -86,106 +86,223 @@ export default function LandingPage() {
             <p className="text-lg md:text-xl text-gray-400 mt-4 max-w-2xl font-medium">We don't rely on guesswork. We deploy highly calibrated, scalable digital advertising campaigns built specifically to penetrate your high-value market sectors.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[450px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[450px] overflow-visible">
 
-            {/* Bento 1: Targeted Strategy */}
+            {/* Bento 1: Targeted Execution — rich hover pop-out */}
+            {/* Outer: handles scale/lift — no overflow clip */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative col-span-1 bg-zinc-900 overflow-hidden group border border-white/10 hover:border-orange-500/50 transition-colors duration-500 h-[400px] md:h-auto"
+              whileHover={{ scale: 1.04, y: -10, zIndex: 20 }}
+              transition={{ type: "spring", stiffness: 280, damping: 22 }}
+              className="group col-span-1 relative h-[400px] md:h-auto cursor-pointer"
+              style={{ isolation: "isolate" }}
             >
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors z-10" />
-              <img src={images.bento1} alt="Target Strategy" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:scale-105 transition-transform duration-700" />
+              {/* Inner: clips overflow for slide animation + border/shadow */}
+              <div className="relative w-full h-full overflow-hidden bg-zinc-900 border border-white/10 group-hover:border-orange-500/70 group-hover:shadow-[0_25px_70px_rgba(249,115,22,0.35)] transition-[border-color,box-shadow] duration-300">
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500 z-10" />
+                <img src={images.bento1} alt="Target Strategy" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700" />
 
-              <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-black flex items-center justify-center rounded-sm shadow-[0_0_20px_rgba(249,115,22,0.4)]">
-                  <Target size={32} />
+                {/* Default content */}
+                <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between group-hover:opacity-0 group-hover:translate-y-4 transition-all duration-300">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-orange-500 text-black flex items-center justify-center rounded-sm shadow-[0_0_20px_rgba(249,115,22,0.4)]">
+                    <Target size={32} />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">Targeted Execution</h3>
+                    <ul className="space-y-3 font-medium text-gray-200 text-sm md:text-base">
+                      <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Laser-focused Ad Strategy</li>
+                      <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> High-Converting Creative</li>
+                    </ul>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">Targeted Execution</h3>
-                  <ul className="space-y-3 font-medium text-gray-200 text-sm md:text-base">
-                    <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Laser-focused Ad Strategy</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> High-Converting Creative</li>
+
+                {/* Hover reveal overlay — slides up from bottom */}
+                <div className="absolute inset-0 z-30 flex flex-col justify-end p-8 md:p-10 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out bg-gradient-to-t from-black/95 via-black/80 to-transparent">
+                  <div className="w-12 h-12 bg-orange-500 text-black flex items-center justify-center rounded-sm mb-4 shadow-[0_0_25px_rgba(249,115,22,0.6)]">
+                    <Target size={28} />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-2 text-white">Targeted Execution</h3>
+                  <p className="text-gray-300 text-sm mb-4 leading-relaxed">We engineer precision ad campaigns that reach decision-makers at the exact moment they're ready to buy. Every creative, every placement — intentional.</p>
+                  <ul className="space-y-1.5 text-sm font-medium text-gray-200 mb-5">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Laser-focused Ad Strategy</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> High-Converting Creative</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> A/B Testing & Iteration Loops</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Multi-Platform Ad Buying</li>
                   </ul>
+                  <Link href="/apply" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black font-bold text-sm px-5 py-2.5 transition-colors duration-200 w-fit">
+                    Get Started <ArrowRight size={15} />
+                  </Link>
                 </div>
               </div>
             </motion.div>
 
-            {/* Bento 2: Global Tracking */}
+            {/* Bento 2: Omnipresent Tracking — rich hover pop-out */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="relative col-span-1 bg-zinc-900 overflow-hidden group border border-white/10 hover:border-orange-500/50 transition-colors duration-500 h-[400px] md:h-auto"
+              whileHover={{ scale: 1.04, y: -10, zIndex: 20 }}
+              transition={{ type: "spring", stiffness: 280, damping: 22, delay: 0.1 }}
+              className="group col-span-1 relative h-[400px] md:h-auto cursor-pointer"
+              style={{ isolation: "isolate" }}
             >
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors z-10" />
-              <img src={images.bento2} alt="Global Tracking" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:scale-105 transition-transform duration-700" />
+              <div className="relative w-full h-full overflow-hidden bg-zinc-900 border border-white/10 group-hover:border-orange-500/70 group-hover:shadow-[0_25px_70px_rgba(249,115,22,0.35)] transition-[border-color,box-shadow] duration-300">
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500 z-10" />
+                <img src={images.bento2} alt="Global Tracking" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700" />
 
-              <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-white text-black flex items-center justify-center rounded-sm">
-                  <Globe size={32} />
+                {/* Default content */}
+                <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between group-hover:opacity-0 group-hover:translate-y-4 transition-all duration-300">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white text-black flex items-center justify-center rounded-sm">
+                    <Globe size={32} />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">Omnipresent Tracking</h3>
+                    <ul className="space-y-3 font-medium text-gray-200 text-sm md:text-base">
+                      <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Deep Audience Analytics</li>
+                      <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Omnichannel Remarketing</li>
+                    </ul>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">Omnipresent Tracking</h3>
-                  <ul className="space-y-3 font-medium text-gray-200 text-sm md:text-base">
-                    <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Deep Audience Analytics</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="text-orange-500" size={20} /> Omnichannel Remarketing</li>
+
+                {/* Hover reveal overlay — slides up from bottom */}
+                <div className="absolute inset-0 z-30 flex flex-col justify-end p-8 md:p-10 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out bg-gradient-to-t from-black/95 via-black/80 to-transparent">
+                  <div className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-sm mb-4">
+                    <Globe size={28} />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black uppercase mb-2 text-white">Omnipresent Tracking</h3>
+                  <p className="text-gray-300 text-sm mb-4 leading-relaxed">You can't scale what you can't measure. We implement enterprise-grade analytics and remarketing infrastructure that follows your prospects across every digital touchpoint.</p>
+                  <ul className="space-y-1.5 text-sm font-medium text-gray-200 mb-5">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Deep Audience Analytics</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Omnichannel Remarketing</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Pixel & Server-Side Tracking</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="text-orange-500 shrink-0" size={15} /> Full Funnel Attribution</li>
                   </ul>
+                  <Link href="/apply" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black font-bold text-sm px-5 py-2.5 transition-colors duration-200 w-fit">
+                    Get Started <ArrowRight size={15} />
+                  </Link>
                 </div>
               </div>
             </motion.div>
 
-            {/* Bento 3: Financial ROI (Spans 2 columns on large screens) */}
+            {/* Bento 3: Financial ROI — rich hover pop-out (spans 2 rows on large screens) */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="relative col-span-1 md:col-span-2 lg:col-span-1 lg:row-span-2 bg-zinc-900 overflow-hidden group border border-white/10 hover:border-orange-500/50 transition-colors duration-500"
+              whileHover={{ scale: 1.02, y: -10, zIndex: 20 }}
+              transition={{ type: "spring", stiffness: 280, damping: 22, delay: 0.2 }}
+              className="group col-span-1 md:col-span-2 lg:col-span-1 lg:row-span-2 relative cursor-pointer"
+              style={{ isolation: "isolate" }}
             >
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors z-10" />
-              <img src={images.bento3} alt="Financial Strategy" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:scale-105 transition-transform duration-700" />
+              <div className="relative w-full h-full overflow-hidden bg-zinc-900 border border-white/10 group-hover:border-orange-500/70 group-hover:shadow-[0_25px_70px_rgba(249,115,22,0.35)] transition-[border-color,box-shadow] duration-300">
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-500 z-10" />
+                <img src={images.bento3} alt="Financial Strategy" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700" />
 
-              <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between text-white">
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-orange-500 text-black flex items-center justify-center rounded-sm shadow-xl shadow-orange-500/20">
-                  <DollarSign size={36} />
-                </div>
-                <div>
-                  <h3 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase mb-6 leading-none text-white">Measured In Revenue.</h3>
-                  <p className="text-gray-300 font-bold text-base md:text-lg mb-8">We systematically scale operations. We ensure our partners make at least their entire investment back in hard, measurable returns.</p>
-
-                  <div className="space-y-4">
-                    <div className="bg-black/90 backdrop-blur-sm p-4 text-white border-l-4 border-white">
-                      <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-gray-400 mb-1">Total Generated</p>
-                      <p className="text-2xl md:text-4xl font-black">$7.2M+</p>
-                    </div>
-                    <div className="bg-black/90 backdrop-blur-sm p-4 text-white border-l-4 border-white">
-                      <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-gray-400 mb-1">Average ROAS</p>
-                      <p className="text-2xl md:text-4xl font-black text-orange-500">4.2X</p>
+                {/* Default content */}
+                <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-between text-white group-hover:opacity-0 group-hover:translate-y-4 transition-all duration-300">
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-orange-500 text-black flex items-center justify-center rounded-sm shadow-xl shadow-orange-500/20">
+                    <DollarSign size={36} />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase mb-6 leading-none text-white">Measured In Revenue.</h3>
+                    <p className="text-gray-300 font-bold text-base md:text-lg mb-8">We systematically scale operations. We ensure our partners make at least their entire investment back in hard, measurable returns.</p>
+                    <div className="space-y-4">
+                      <div className="bg-black/90 backdrop-blur-sm p-4 text-white border-l-4 border-white">
+                        <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-gray-400 mb-1">Total Generated</p>
+                        <p className="text-2xl md:text-4xl font-black">$7.2M+</p>
+                      </div>
+                      <div className="bg-black/90 backdrop-blur-sm p-4 text-white border-l-4 border-white">
+                        <p className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-gray-400 mb-1">Average ROAS</p>
+                        <p className="text-2xl md:text-4xl font-black text-orange-500">4.2X</p>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Hover reveal overlay — slides up from bottom */}
+                <div className="absolute inset-0 z-30 flex flex-col justify-end p-8 md:p-10 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out bg-gradient-to-t from-black/98 via-black/85 to-black/20">
+                  <div className="w-14 h-14 bg-orange-500 text-black flex items-center justify-center rounded-sm mb-4 shadow-[0_0_30px_rgba(249,115,22,0.5)]">
+                    <DollarSign size={36} />
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-black uppercase mb-2 text-white leading-tight">Measured In Revenue.</h3>
+                  <p className="text-gray-300 text-sm mb-4 leading-relaxed">Every dollar you put in, we engineer to multiply. Our performance model is built on accountability — we don't win unless you do. No retainers. No excuses. Just results.</p>
+                  <div className="grid grid-cols-2 gap-2 mb-5">
+                    <div className="bg-black/80 border border-white/10 p-2.5">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Total Generated</p>
+                      <p className="text-xl font-black text-white">$7.2M+</p>
+                    </div>
+                    <div className="bg-black/80 border border-white/10 p-2.5">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Avg ROAS</p>
+                      <p className="text-xl font-black text-orange-500">4.2X</p>
+                    </div>
+                    <div className="bg-black/80 border border-white/10 p-2.5">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Clients Served</p>
+                      <p className="text-xl font-black text-white">28+</p>
+                    </div>
+                    <div className="bg-black/80 border border-white/10 p-2.5">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Avg Growth</p>
+                      <p className="text-xl font-black text-orange-500">312%</p>
+                    </div>
+                  </div>
+                  <Link href="/apply" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black font-bold text-sm px-5 py-2.5 transition-colors duration-200 w-fit">
+                    See If You Qualify <ArrowRight size={15} />
+                  </Link>
+                </div>
               </div>
             </motion.div>
 
-            {/* Bento 4: Scalability */}
+            {/* Bento 4: Infinite Scale — rich hover pop-out */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative col-span-1 md:col-span-2 lg:col-span-2 bg-zinc-900 overflow-hidden group border border-white/10 hover:border-orange-500/50 transition-colors duration-500 h-[300px] lg:h-auto"
+              whileHover={{ scale: 1.02, y: -10, zIndex: 20 }}
+              transition={{ type: "spring", stiffness: 280, damping: 22 }}
+              className="group col-span-1 md:col-span-2 lg:col-span-2 relative h-[300px] lg:h-auto cursor-pointer"
+              style={{ isolation: "isolate" }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent z-10" />
-              <img src={images.process} alt="Scalable Systems" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-40 group-hover:scale-105 transition-transform duration-700" />
+              <div className="relative w-full h-full overflow-hidden bg-zinc-900 border border-white/10 group-hover:border-orange-500/70 group-hover:shadow-[0_25px_70px_rgba(249,115,22,0.35)] transition-[border-color,box-shadow] duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent z-10 group-hover:via-black/50 transition-all duration-500" />
+                <img src={images.process} alt="Scalable Systems" className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
 
-              <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-center max-w-xl">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 text-white flex items-center justify-center rounded-sm mb-6 border border-white/20">
-                  <TrendingUp size={24} />
+                {/* Default content */}
+                <div className="relative z-20 p-8 md:p-10 h-full flex flex-col justify-center max-w-xl group-hover:opacity-0 group-hover:-translate-x-4 transition-all duration-300">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 text-white flex items-center justify-center rounded-sm mb-6 border border-white/20">
+                    <TrendingUp size={24} />
+                  </div>
+                  <h3 className="text-3xl md:text-5xl font-black uppercase mb-4">Infinite Scale.</h3>
+                  <p className="text-base md:text-lg text-gray-300 font-medium">Over 28+ enterprises scaled successfully using our proprietary infrastructure and continuous optimization methodology.</p>
                 </div>
-                <h3 className="text-3xl md:text-5xl font-black uppercase mb-4">Infinite Scale.</h3>
-                <p className="text-base md:text-lg text-gray-300 font-medium">Over 28+ enterprises scaled successfully using our proprietary infrastructure and continuous optimization methodology.</p>
+
+                {/* Hover reveal overlay — slides in from the right */}
+                <div className="absolute inset-0 z-30 flex flex-col justify-center p-8 md:p-10 translate-x-full group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out bg-gradient-to-r from-black/95 via-black/80 to-transparent">
+                  <div className="max-w-2xl">
+                    <div className="w-12 h-12 bg-orange-500/20 border border-orange-500/50 text-orange-400 flex items-center justify-center rounded-sm mb-5">
+                      <TrendingUp size={24} />
+                    </div>
+                    <h3 className="text-3xl md:text-5xl font-black uppercase mb-3 text-white">Infinite Scale.</h3>
+                    <p className="text-gray-300 text-base mb-5 leading-relaxed">Our infrastructure is built for one purpose: relentless growth. We don't cap your potential — we design systems that compound over time, turning momentum into market dominance.</p>
+                    <div className="grid grid-cols-3 gap-4 mb-6">
+                      <div className="border-l-2 border-orange-500 pl-3">
+                        <p className="text-2xl md:text-3xl font-black text-white">28+</p>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Enterprises Scaled</p>
+                      </div>
+                      <div className="border-l-2 border-orange-500 pl-3">
+                        <p className="text-2xl md:text-3xl font-black text-white">6mo</p>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Avg. Ramp Time</p>
+                      </div>
+                      <div className="border-l-2 border-orange-500 pl-3">
+                        <p className="text-2xl md:text-3xl font-black text-orange-500">∞</p>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Growth Ceiling</p>
+                      </div>
+                    </div>
+                    <Link href="/apply" className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-black font-bold text-sm px-5 py-2.5 transition-colors duration-200 w-fit">
+                      Start Scaling <ArrowRight size={15} />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
